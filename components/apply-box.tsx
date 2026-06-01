@@ -84,7 +84,7 @@ export default function ApplyBox({
             min={1}
             value={offered}
             onChange={(e) => setOffered(parseInt(e.target.value, 10) || 1)}
-            className="w-32 rounded-md border border-white bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+            className="w-32 rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
           />
         </div>
         <div>
@@ -93,7 +93,7 @@ export default function ApplyBox({
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={3}
-            className="w-full rounded-md border border-white bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+            className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
             placeholder="例: 交通誘導2級保有者2名出せます"
           />
         </div>

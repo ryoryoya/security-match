@@ -10,30 +10,79 @@ import { PREFECTURES } from "@/lib/types";
 
 const UNDECIDED = "__undecided__";
 const FREE = "__free__";
+const NOT_SELECTED = "__not_selected__";
 
-const optionalTime = z
-  .string()
-  .nullable()
-  .optional()
-  .refine(
-    (v) => !v || /^\d{1,2}:\d{2}$/.test(v),
-    "HH:MM 形式で入力してください"
-  );
+const timeField = (label: string) =>
+  z
+    .string({
+      required_error: `${label}を入力するか未定を選択してください`,
+      invalid_type_error: `${label}を入力するか未定を選択してください`,
+    })
+    .nullable()
+    .refine(
+      (v) => v === null || /^\d{1,2}:\d{2}$/.test(v),
+      "HH:MM 形式で入力してください"
+    );
 
 const schema = z.object({
   title: z.string().min(1, "タイトルは必須です"),
-  work_date: z.string().nullable().optional(),
-  start_time: optionalTime,
-  end_time: optionalTime,
-  prefecture: z.string().nullable().optional(),
+  work_date: z
+    .string({
+      required_error: "作業日を入力するか未定を選択してください",
+      invalid_type_error: "作業日を入力するか未定を選択してください",
+    })
+    .nullable()
+    .refine(
+      (v) => v === null || v.length > 0,
+      "作業日を入力するか未定を選択してください"
+    ),
+  start_time: timeField("開始時刻"),
+  end_time: timeField("終了時刻"),
+  prefecture: z
+    .string({
+      required_error: "都道府県を選択してください",
+      invalid_type_error: "都道府県を選択してください",
+    })
+    .nullable()
+    .refine(
+      (v) => v === null || v.length > 0,
+      "都道府県を選択してください"
+    ),
   location: z.string().optional(),
   required_count: z
-    .union([z.coerce.number().int().min(1, "1人以上"), z.null()])
-    .optional(),
-  unit_price: z.union([z.coerce.number().int().min(0), z.null()]).optional(),
-  price_type: z.enum(["daily", "hourly"]).nullable().optional(),
-  shift_type: z.enum(["day", "night", "business_trip"]).nullable().optional(),
-  designated_route: z.boolean().nullable().optional(),
+    .number({
+      required_error: "必要人工を選択してください",
+      invalid_type_error: "必要人工を選択してください",
+    })
+    .int()
+    .min(1, "1人以上")
+    .nullable(),
+  unit_price: z
+    .number({
+      required_error: "単価を選択してください",
+      invalid_type_error: "単価を選択してください",
+    })
+    .int()
+    .min(0)
+    .nullable(),
+  price_type: z
+    .enum(["daily", "hourly"], {
+      required_error: "単価種別を選択してください",
+      invalid_type_error: "単価種別を選択してください",
+    })
+    .nullable(),
+  shift_type: z
+    .enum(["day", "night", "business_trip"], {
+      required_error: "勤務区分を選択してください",
+      invalid_type_error: "勤務区分を選択してください",
+    })
+    .nullable(),
+  designated_route: z
+    .boolean({
+      required_error: "指定路線を選択してください",
+      invalid_type_error: "指定路線を選択してください",
+    })
+    .nullable(),
   description: z.string().optional(),
   notes: z.string().optional(),
 });
@@ -53,14 +102,6 @@ export default function JobForm({ companyId }: { companyId: string }) {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      price_type: "daily",
-      required_count: 1,
-      unit_price: 15000,
-      prefecture: "北海道",
-      designated_route: null,
-      shift_type: null,
-    },
   });
 
   async function onSubmit(values: FormValues) {
@@ -76,6 +117,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
       unit_price: values.unit_price ?? null,
       price_type: values.price_type ?? null,
       shift_type: values.shift_type ?? null,
+      designated_route: values.designated_route ?? null,
       company_id: companyId,
     };
     const { data, error } = await supabase
@@ -100,27 +142,38 @@ export default function JobForm({ companyId }: { companyId: string }) {
         <input
           {...register("title")}
           placeholder="例: 交通誘導 札幌市中央区"
-          className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
       <div className="flex flex-wrap gap-4">
-        <Field label="勤務区分" width="w-32">
+        <Field label="勤務区分" error={errors.shift_type?.message} width="w-32">
           <Controller
             name="shift_type"
             control={control}
             render={({ field }) => (
               <select
-                value={field.value ?? UNDECIDED}
-                onChange={(e) =>
-                  field.onChange(
-                    e.target.value === UNDECIDED
-                      ? null
-                      : (e.target.value as "day" | "night" | "business_trip")
-                  )
+                value={
+                  field.value === undefined
+                    ? ""
+                    : field.value === null
+                      ? UNDECIDED
+                      : field.value
                 }
-                className="w-32 rounded-md border border-white px-3 py-2 bg-slate-800 text-white"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "") field.onChange(undefined);
+                  else if (v === UNDECIDED) field.onChange(null);
+                  else
+                    field.onChange(
+                      v as "day" | "night" | "business_trip"
+                    );
+                }}
+                className="w-32 rounded-md border border-white px-3 py-2 bg-white text-slate-900"
               >
+                <option value="" disabled>
+                  選択してください
+                </option>
                 <option value="day">日勤</option>
                 <option value="night">夜勤</option>
                 <option value="business_trip">出張</option>
@@ -135,7 +188,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
             control={control}
             render={({ field }) => (
               <InputWithUndecided
-                value={field.value ?? ""}
+                value={field.value as string | null | undefined}
                 onChange={field.onChange}
                 inputType="date"
                 width="w-44"
@@ -149,7 +202,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
             control={control}
             render={({ field }) => (
               <InputWithUndecided
-                value={field.value ?? ""}
+                value={field.value as string | null | undefined}
                 onChange={field.onChange}
                 inputType="text"
                 placeholder="例: 09:00"
@@ -164,7 +217,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
             control={control}
             render={({ field }) => (
               <InputWithUndecided
-                value={field.value ?? ""}
+                value={field.value as string | null | undefined}
                 onChange={field.onChange}
                 inputType="text"
                 placeholder="例: 18:00"
@@ -176,13 +229,13 @@ export default function JobForm({ companyId }: { companyId: string }) {
       </div>
 
       <div className="flex flex-wrap gap-4">
-        <Field label="都道府県" width="w-40">
+        <Field label="都道府県" error={errors.prefecture?.message} width="w-40">
           <Controller
             name="prefecture"
             control={control}
             render={({ field }) => (
               <SelectWithUndecided
-                value={field.value ?? ""}
+                value={field.value as string | null | undefined}
                 onChange={field.onChange}
                 options={PREFECTURES as readonly string[]}
                 width="w-40"
@@ -194,7 +247,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           <input
             {...register("location")}
             placeholder="例: 中央区大通西3丁目"
-            className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+            className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
       </div>
@@ -210,11 +263,9 @@ export default function JobForm({ companyId }: { companyId: string }) {
             control={control}
             render={({ field }) => (
               <ComboInput
-                value={field.value == null ? "" : String(field.value)}
-                onChange={(v) =>
-                  field.onChange(v === "" ? null : Number(v))
-                }
-                presets={COUNT_PRESETS.map(String)}
+                value={field.value as number | null | undefined}
+                onChange={field.onChange}
+                presets={COUNT_PRESETS}
                 inputType="number"
                 width="w-32"
                 unit="名"
@@ -222,7 +273,11 @@ export default function JobForm({ companyId }: { companyId: string }) {
             )}
           />
         </Field>
-        <Field label="指定路線(資格者配置)" width="w-40">
+        <Field
+          label="指定路線(資格者配置)"
+          error={errors.designated_route?.message}
+          width="w-40"
+        >
           <Controller
             name="designated_route"
             control={control}
@@ -233,16 +288,21 @@ export default function JobForm({ companyId }: { companyId: string }) {
                     ? "true"
                     : field.value === false
                       ? "false"
-                      : UNDECIDED
+                      : field.value === null
+                        ? UNDECIDED
+                        : ""
                 }
                 onChange={(e) => {
                   const v = e.target.value;
-                  field.onChange(
-                    v === "true" ? true : v === "false" ? false : null
-                  );
+                  if (v === "") field.onChange(undefined);
+                  else if (v === UNDECIDED) field.onChange(null);
+                  else field.onChange(v === "true");
                 }}
-                className="w-40 rounded-md border border-white px-3 py-2 bg-slate-800 text-white"
+                className="w-40 rounded-md border border-white px-3 py-2 bg-white text-slate-900"
               >
+                <option value="" disabled>
+                  選択してください
+                </option>
                 <option value="true">有</option>
                 <option value="false">無</option>
                 <option value={UNDECIDED}>未定</option>
@@ -256,11 +316,9 @@ export default function JobForm({ companyId }: { companyId: string }) {
             control={control}
             render={({ field }) => (
               <ComboInput
-                value={field.value == null ? "" : String(field.value)}
-                onChange={(v) =>
-                  field.onChange(v === "" ? null : Number(v))
-                }
-                presets={PRICE_PRESETS.map(String)}
+                value={field.value as number | null | undefined}
+                onChange={field.onChange}
+                presets={PRICE_PRESETS}
                 inputType="number"
                 width="w-40"
                 unit="円"
@@ -268,22 +326,30 @@ export default function JobForm({ companyId }: { companyId: string }) {
             )}
           />
         </Field>
-        <Field label="単価種別" width="w-32">
+        <Field label="単価種別" error={errors.price_type?.message} width="w-32">
           <Controller
             name="price_type"
             control={control}
             render={({ field }) => (
               <select
-                value={field.value ?? UNDECIDED}
-                onChange={(e) =>
-                  field.onChange(
-                    e.target.value === UNDECIDED
-                      ? null
-                      : (e.target.value as "daily" | "hourly")
-                  )
+                value={
+                  field.value === undefined
+                    ? ""
+                    : field.value === null
+                      ? UNDECIDED
+                      : field.value
                 }
-                className="w-32 rounded-md border border-white px-3 py-2 bg-slate-800 text-white"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === "") field.onChange(undefined);
+                  else if (v === UNDECIDED) field.onChange(null);
+                  else field.onChange(v as "daily" | "hourly");
+                }}
+                className="w-32 rounded-md border border-white px-3 py-2 bg-white text-slate-900"
               >
+                <option value="" disabled>
+                  選択してください
+                </option>
                 <option value="daily">日給</option>
                 <option value="hourly">時給</option>
                 <option value={UNDECIDED}>未定</option>
@@ -298,7 +364,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           {...register("description")}
           rows={4}
           placeholder={"例:\n集合場所: 札幌駅北口ロータリー\n集合時間: 08:30\n服装: 制服・安全靴\n持ち物: 誘導棒・ヘルメット"}
-          className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
@@ -307,9 +373,15 @@ export default function JobForm({ companyId }: { companyId: string }) {
           {...register("notes")}
           rows={3}
           placeholder={"例:\n4時間未満は人工保障\n雨天決行\n初回顔合わせあり"}
-          className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
+
+      {Object.keys(errors).length > 0 && (
+        <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
+          入力に不備があります。赤字の項目をご確認ください。
+        </p>
+      )}
 
       {serverError && (
         <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
@@ -346,47 +418,70 @@ function ComboInput({
   width,
   unit,
 }: {
-  value: string;
-  onChange: (v: string) => void;
-  presets?: string[];
+  value: number | null | undefined;
+  onChange: (v: number | null | undefined) => void;
+  presets?: number[];
   inputType: "text" | "number" | "date";
   placeholder?: string;
   width: string;
   unit?: string;
 }) {
   const presetList = presets ?? [];
-  const isPreset = !!value && presetList.includes(value);
-  const initialMode: "preset" | "free" | "undecided" =
-    value === "" ? "undecided" : isPreset ? "preset" : "free";
-  const [mode, setMode] = useState<"preset" | "free" | "undecided">(initialMode);
+  const isPreset =
+    typeof value === "number" && presetList.includes(value);
+  const initialMode: "preset" | "free" | "undecided" | "unset" =
+    value === undefined
+      ? "unset"
+      : value === null
+        ? "undecided"
+        : isPreset
+          ? "preset"
+          : "free";
+  const [mode, setMode] = useState<
+    "preset" | "free" | "undecided" | "unset"
+  >(initialMode);
 
   function handleSelectChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const v = e.target.value;
-    if (v === UNDECIDED) {
+    if (v === NOT_SELECTED) {
+      setMode("unset");
+      onChange(undefined);
+    } else if (v === UNDECIDED) {
       setMode("undecided");
-      onChange("");
+      onChange(null);
     } else if (v === FREE) {
       setMode("free");
-      onChange("");
+      onChange(null);
     } else {
       setMode("preset");
-      onChange(v);
+      onChange(Number(v));
     }
   }
 
   const selectValue =
-    mode === "undecided" ? UNDECIDED : mode === "free" ? FREE : value;
+    mode === "unset"
+      ? NOT_SELECTED
+      : mode === "undecided"
+        ? UNDECIDED
+        : mode === "free"
+          ? FREE
+          : value == null
+            ? NOT_SELECTED
+            : String(value);
 
   return (
     <div className="flex flex-col gap-1">
       <select
         value={selectValue}
         onChange={handleSelectChange}
-        className={`${width} rounded-md border border-white px-3 py-2 bg-slate-800 text-white`}
+        className={`${width} rounded-md border border-white px-3 py-2 bg-white text-slate-900`}
       >
+        <option value={NOT_SELECTED} disabled>
+          選択してください
+        </option>
         {presetList.map((p) => (
-          <option key={p} value={p}>
-            {unit ? `${p} ${unit}` : p}
+          <option key={p} value={String(p)}>
+            {unit ? `${p} ${unit}` : String(p)}
           </option>
         ))}
         <option value={FREE}>自由入力</option>
@@ -395,11 +490,14 @@ function ComboInput({
       {mode === "free" && (
         <input
           type={inputType}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
+          value={value ?? ""}
+          onChange={(e) => {
+            const raw = e.target.value;
+            onChange(raw === "" ? null : Number(raw));
+          }}
           placeholder={placeholder}
           inputMode={inputType === "text" ? "numeric" : undefined}
-          className={`${width} rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2`}
+          className={`${width} rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2`}
         />
       )}
     </div>
@@ -413,35 +511,27 @@ function InputWithUndecided({
   placeholder,
   width,
 }: {
-  value: string;
-  onChange: (v: string) => void;
+  value: string | null | undefined;
+  onChange: (v: string | null) => void;
   inputType: "text" | "number" | "date";
   placeholder?: string;
   width: string;
 }) {
-  const [undecided, setUndecided] = useState(value === "");
+  const undecided = value === null;
 
   function toggleUndecided() {
-    if (undecided) {
-      setUndecided(false);
-    } else {
-      setUndecided(true);
-      onChange("");
-    }
+    onChange(undecided ? "" : null);
   }
 
   return (
     <div className="flex items-center gap-2">
       <input
         type={inputType}
-        value={value}
+        value={value ?? ""}
         disabled={undecided}
-        onChange={(e) => {
-          if (undecided) setUndecided(false);
-          onChange(e.target.value);
-        }}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={undecided ? "未定" : placeholder}
-        className={`${width} rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 disabled:opacity-60`}
+        className={`${width} rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2 disabled:opacity-60`}
       />
       <button
         type="button"
@@ -464,19 +554,31 @@ function SelectWithUndecided({
   options,
   width,
 }: {
-  value: string;
-  onChange: (v: string) => void;
+  value: string | null | undefined;
+  onChange: (v: string | null | undefined) => void;
   options: readonly string[];
   width: string;
 }) {
+  const selectValue =
+    value === undefined || value === ""
+      ? NOT_SELECTED
+      : value === null
+        ? UNDECIDED
+        : value;
   return (
     <select
-      value={value === "" ? UNDECIDED : value}
-      onChange={(e) =>
-        onChange(e.target.value === UNDECIDED ? "" : e.target.value)
-      }
-      className={`${width} rounded-md border border-white px-3 py-2 bg-slate-800 text-white`}
+      value={selectValue}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (v === NOT_SELECTED) onChange(undefined);
+        else if (v === UNDECIDED) onChange(null);
+        else onChange(v);
+      }}
+      className={`${width} rounded-md border border-white px-3 py-2 bg-white text-slate-900`}
     >
+      <option value={NOT_SELECTED} disabled>
+        選択してください
+      </option>
       {options.map((p) => (
         <option key={p} value={p}>
           {p}

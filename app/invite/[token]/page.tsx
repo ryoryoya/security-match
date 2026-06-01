@@ -184,7 +184,7 @@ export default function InvitePage() {
             <select
               value={prefecture}
               onChange={(e) => setPrefecture(e.target.value)}
-              className="w-full rounded-md border border-white px-3 py-2 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-white px-3 py-2 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">選択してください</option>
               {PREFECTURES.map((p) => (
@@ -240,7 +240,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         minLength={minLength}
-        className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </div>
   );

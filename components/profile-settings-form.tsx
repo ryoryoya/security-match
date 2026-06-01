@@ -46,7 +46,7 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
           type="text"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          className="w-full rounded-md border border-white bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
       </div>
       <div>
@@ -58,7 +58,7 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
           value={notificationEmail}
           onChange={(e) => setNotificationEmail(e.target.value)}
           placeholder="例: info@example.com"
-          className="w-full rounded-md border border-white bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
         <p className="text-xs text-slate-400 mt-1">
           空欄にすると通知メールは送信されません。

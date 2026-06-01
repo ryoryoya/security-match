@@ -69,7 +69,7 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
         <select
           value={prefecture}
           onChange={(e) => setPrefecture(e.target.value)}
-          className="w-full rounded-md border border-white px-3 py-2 bg-slate-800 text-slate-100"
+          className="w-full rounded-md border border-white px-3 py-2 bg-white text-slate-900"
         >
           <option value="">選択</option>
           {PREFECTURES.map((p) => (
@@ -122,7 +122,7 @@ function Field({
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-white bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+        className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
       />
     </div>
   );

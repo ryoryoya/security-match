@@ -74,7 +74,7 @@ export default async function JobsListPage({
           <select
             name="prefecture"
             defaultValue={sp.prefecture ?? ""}
-            className="rounded border border-white px-3 py-1.5 text-sm bg-slate-800 text-white"
+            className="rounded border border-white px-3 py-1.5 text-sm bg-white text-slate-900"
           >
             <option value="">すべて</option>
             {PREFECTURES.map((p) => (
@@ -89,7 +89,7 @@ export default async function JobsListPage({
           <select
             name="shift"
             defaultValue={shiftFilter ?? ""}
-            className="rounded border border-white px-3 py-1.5 text-sm bg-slate-800 text-white"
+            className="rounded border border-white px-3 py-1.5 text-sm bg-white text-slate-900"
           >
             <option value="">すべて</option>
             {(Object.keys(SHIFT_LABEL) as ShiftType[]).map((s) => (
@@ -106,7 +106,7 @@ export default async function JobsListPage({
           <select
             name="status"
             defaultValue={sp.status ?? "open"}
-            className="rounded border border-white px-3 py-1.5 text-sm bg-slate-800 text-white"
+            className="rounded border border-white px-3 py-1.5 text-sm bg-white text-slate-900"
           >
             <option value="open">募集中</option>
             <option value="filled">マッチング済み</option>
@@ -118,7 +118,7 @@ export default async function JobsListPage({
           <select
             name="sort"
             defaultValue={sort}
-            className="rounded border border-white px-3 py-1.5 text-sm bg-slate-800 text-white"
+            className="rounded border border-white px-3 py-1.5 text-sm bg-white text-slate-900"
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>

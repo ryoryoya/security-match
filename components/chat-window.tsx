@@ -126,7 +126,7 @@ export default function ChatWindow({
             }
           }}
           placeholder="メッセージを入力..."
-          className="flex-1 rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="flex-1 rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
         <button
           onClick={send}
