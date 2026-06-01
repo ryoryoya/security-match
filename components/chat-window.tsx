@@ -97,7 +97,7 @@ export default function ChatWindow({
                   "max-w-[75%] rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap break-words",
                   mine
                     ? "bg-brand-500 text-white"
-                    : "bg-slate-700 text-slate-100"
+                    : "bg-slate-700 text-white"
                 )}
               >
                 {m.body}
@@ -126,7 +126,7 @@ export default function ChatWindow({
             }
           }}
           placeholder="メッセージを入力..."
-          className="flex-1 rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+          className="flex-1 rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
         />
         <button
           onClick={send}

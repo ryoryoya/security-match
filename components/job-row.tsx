@@ -57,7 +57,7 @@ export default function JobRow({
           </span>
         </Cell>
         <Cell label="案件">
-          <span className="font-semibold text-slate-100 line-clamp-1">{job.title}</span>
+          <span className="font-semibold text-white line-clamp-1">{job.title}</span>
         </Cell>
         <div className="flex md:justify-end items-center gap-1 flex-wrap">
           {urgent && (

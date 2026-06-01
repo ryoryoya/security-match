@@ -102,7 +102,7 @@ export default function InvitePage() {
           <h1 className="text-lg font-bold text-red-300 mb-2">
             招待リンクが無効です
           </h1>
-          <p className="text-sm text-slate-300">{lookupError}</p>
+          <p className="text-sm text-slate-200">{lookupError}</p>
         </div>
       </main>
     );
@@ -123,7 +123,7 @@ export default function InvitePage() {
           <h1 className="text-lg font-bold text-amber-200 mb-2">
             この招待リンクは利用できません
           </h1>
-          <p className="text-sm text-slate-300">
+          <p className="text-sm text-slate-200">
             期限切れまたは既に使用されています。招待元の会社にご連絡ください。
           </p>
         </div>
@@ -135,7 +135,7 @@ export default function InvitePage() {
     <main className="min-h-screen flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-lg bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-8">
         <p className="text-xs text-brand-300 font-medium mb-1">招待</p>
-        <h1 className="text-2xl font-bold text-slate-100 mb-1">
+        <h1 className="text-2xl font-bold text-white mb-1">
           {info.inviting_company_name} からの招待
         </h1>
         <p className="text-sm text-slate-400 mb-6">
@@ -184,7 +184,7 @@ export default function InvitePage() {
             <select
               value={prefecture}
               onChange={(e) => setPrefecture(e.target.value)}
-              className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">選択してください</option>
               {PREFECTURES.map((p) => (
@@ -240,7 +240,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         minLength={minLength}
-        className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </div>
   );

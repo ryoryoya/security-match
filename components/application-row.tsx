@@ -76,14 +76,14 @@ export default function ApplicationRow({
     <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-semibold text-slate-100">
+          <p className="font-semibold text-white">
             {applicantCompany?.name ?? "(不明な会社)"}
           </p>
-          <p className="text-sm text-slate-300 mt-1">
+          <p className="text-sm text-slate-200 mt-1">
             出せる人数: <strong>{application.offered_count} 名</strong>
           </p>
           {application.note && (
-            <p className="text-sm text-slate-300 mt-1 whitespace-pre-wrap">
+            <p className="text-sm text-slate-200 mt-1 whitespace-pre-wrap">
               {application.note}
             </p>
           )}

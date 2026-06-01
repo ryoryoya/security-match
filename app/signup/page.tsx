@@ -75,7 +75,7 @@ export default function SignupPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-lg bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-8">
-        <h1 className="text-2xl font-bold text-slate-100 mb-1">初回会社登録</h1>
+        <h1 className="text-2xl font-bold text-white mb-1">初回会社登録</h1>
         <p className="text-sm text-slate-400 mb-6">
           ネットワーク内の最初の1社として登録します。2社目以降は招待リンクから参加してください。
         </p>
@@ -126,7 +126,7 @@ export default function SignupPage() {
               <select
                 value={prefecture}
                 onChange={(e) => setPrefecture(e.target.value)}
-                className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 <option value="">選択してください</option>
                 {PREFECTURES.map((p) => (
@@ -152,7 +152,7 @@ export default function SignupPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-slate-300 text-center">
+        <p className="mt-6 text-sm text-slate-200 text-center">
           既にアカウントをお持ちの方は{" "}
           <Link href="/login" className="text-brand-300 hover:underline">
             ログイン
@@ -207,7 +207,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         minLength={minLength}
-        className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </div>
   );

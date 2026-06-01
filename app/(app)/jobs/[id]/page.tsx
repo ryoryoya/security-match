@@ -59,7 +59,7 @@ export default async function JobDetailPage({
       <div>
         <p className="text-sm text-slate-400">{(jobCompany as Company)?.name}</p>
         <div className="flex items-center gap-2 mt-1 flex-wrap">
-          <h1 className="text-2xl font-bold text-slate-100">
+          <h1 className="text-2xl font-bold text-white">
             {(job as Job).title}
           </h1>
           {(job as Job).status === "open" && isUrgent(job as Job) && (
@@ -125,7 +125,7 @@ export default async function JobDetailPage({
 
       {isMine && (
         <section>
-          <h2 className="text-lg font-semibold text-slate-100 mb-3">
+          <h2 className="text-lg font-semibold text-white mb-3">
             応募一覧 ({(applications ?? []).length})
           </h2>
           {applications && applications.length > 0 ? (
@@ -164,7 +164,7 @@ function Info({
   return (
     <div className="flex gap-3">
       <dt className="text-sm text-slate-400 w-20 shrink-0">{label}</dt>
-      <dd className="text-sm text-slate-100">{children}</dd>
+      <dd className="text-sm text-white">{children}</dd>
     </div>
   );
 }

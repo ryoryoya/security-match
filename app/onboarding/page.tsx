@@ -20,7 +20,7 @@ export default function OnboardingPage() {
         <h1 className="text-lg font-bold text-amber-200 mb-2">
           会社情報がまだありません
         </h1>
-        <p className="text-sm text-slate-300 mb-4">
+        <p className="text-sm text-slate-200 mb-4">
           このアカウントには会社プロフィールが紐付いていません。既存メンバーから招待リンクを取得してサインアップしてください。
         </p>
         <div className="flex gap-2 justify-center">
@@ -32,7 +32,7 @@ export default function OnboardingPage() {
           </Link>
           <button
             onClick={logout}
-            className="text-sm px-4 py-2 rounded bg-slate-700 text-slate-100 hover:bg-slate-600"
+            className="text-sm px-4 py-2 rounded bg-slate-700 text-white hover:bg-slate-600"
           >
             ログアウト
           </button>

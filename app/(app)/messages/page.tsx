@@ -45,7 +45,7 @@ export default async function MessagesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-100">メッセージ</h1>
+      <h1 className="text-2xl font-bold text-white">メッセージ</h1>
       {threadList.length > 0 ? (
         <div className="bg-slate-800 border border-slate-700 rounded-lg divide-y divide-slate-700">
           {threadList.map((t) => {
@@ -61,10 +61,10 @@ export default async function MessagesPage() {
                 href={`/messages/${t.id}`}
                 className="block p-4 hover:bg-slate-700"
               >
-                <p className="font-semibold text-slate-100">
+                <p className="font-semibold text-white">
                   {other?.name ?? "(会社)"}
                 </p>
-                <p className="text-sm text-slate-300 mt-1">
+                <p className="text-sm text-slate-200 mt-1">
                   案件: {job?.title ?? "-"}
                 </p>
               </Link>

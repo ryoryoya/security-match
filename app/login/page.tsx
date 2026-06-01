@@ -30,7 +30,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-8">
-        <h1 className="text-2xl font-bold text-slate-100 mb-1">
+        <h1 className="text-2xl font-bold text-white mb-1">
           security-match
         </h1>
         <p className="text-sm text-slate-400 mb-6">
@@ -47,7 +47,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           <div>
@@ -59,7 +59,7 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           {error && (
@@ -76,7 +76,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-slate-700 text-sm text-slate-300 space-y-2">
+        <div className="mt-6 pt-6 border-t border-slate-700 text-sm text-slate-200 space-y-2">
           <p>
             初めてご利用の方は、既存メンバーから届いた
             <strong>招待リンク</strong>からサインアップしてください。

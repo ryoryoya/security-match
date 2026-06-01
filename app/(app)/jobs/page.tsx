@@ -45,7 +45,7 @@ export default async function JobsListPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-slate-100">案件一覧</h1>
+        <h1 className="text-2xl font-bold text-white">案件一覧</h1>
         <Link
           href="/jobs/new"
           className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-md transition"
@@ -63,7 +63,7 @@ export default async function JobsListPage({
           <select
             name="prefecture"
             defaultValue={sp.prefecture ?? ""}
-            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-slate-100"
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-white"
           >
             <option value="">すべて</option>
             {PREFECTURES.map((p) => (
@@ -80,7 +80,7 @@ export default async function JobsListPage({
           <select
             name="status"
             defaultValue={sp.status ?? "open"}
-            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-slate-100"
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-white"
           >
             <option value="open">募集中</option>
             <option value="filled">マッチング済み</option>
@@ -92,7 +92,7 @@ export default async function JobsListPage({
           <select
             name="sort"
             defaultValue={sort}
-            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-slate-100"
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-white"
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>
@@ -104,7 +104,7 @@ export default async function JobsListPage({
         <div className="flex items-end">
           <button
             type="submit"
-            className="bg-slate-700 text-slate-100 text-sm px-4 py-1.5 rounded hover:bg-slate-600"
+            className="bg-slate-700 text-white text-sm px-4 py-1.5 rounded hover:bg-slate-600"
           >
             適用
           </button>

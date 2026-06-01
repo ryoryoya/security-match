@@ -47,11 +47,11 @@ export default async function ThreadPage({
       <div className="mb-4">
         <Link
           href="/messages"
-          className="text-sm text-slate-400 hover:text-slate-100"
+          className="text-sm text-slate-400 hover:text-white"
         >
           ← メッセージ一覧
         </Link>
-        <h1 className="text-xl font-bold text-slate-100 mt-1">
+        <h1 className="text-xl font-bold text-white mt-1">
           {(otherCompany as Company)?.name}
         </h1>
         <p className="text-sm text-slate-400">

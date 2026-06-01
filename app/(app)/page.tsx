@@ -46,7 +46,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-100">
+        <h1 className="text-2xl font-bold text-white">
           こんにちは、{session.profile.display_name ?? ""}さん
         </h1>
         <p className="text-sm text-slate-400 mt-1">{session.company.name}</p>
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
 
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-slate-100">
+          <h2 className="text-lg font-semibold text-white">
             最新の他社案件
           </h2>
           <Link
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold text-slate-100 mb-3">
+        <h2 className="text-lg font-semibold text-white mb-3">
           自社の募集中案件
         </h2>
         {myOpenJobs && myOpenJobs.length > 0 ? (
@@ -136,7 +136,7 @@ function StatCard({
       className="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-brand-500 transition"
     >
       <p className="text-xs text-slate-400">{label}</p>
-      <p className="text-2xl font-bold text-slate-100 mt-1">{value}</p>
+      <p className="text-2xl font-bold text-white mt-1">{value}</p>
     </Link>
   );
 }
