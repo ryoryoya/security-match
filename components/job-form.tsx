@@ -40,7 +40,6 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-const TIME_PRESETS = ["07:00", "08:00", "09:00", "10:00", "12:00", "13:00", "16:00", "17:00", "18:00", "20:00", "22:00"];
 const COUNT_PRESETS = [1, 2, 3, 4, 5, 6, 8, 10, 15, 20];
 const PRICE_PRESETS = [10000, 12000, 13000, 15000, 18000, 20000, 25000, 30000];
 
@@ -130,12 +129,12 @@ export default function JobForm({ companyId }: { companyId: string }) {
             )}
           />
         </Field>
-        <Field label="作業日" error={errors.work_date?.message} width="w-44">
+        <Field label="作業日" error={errors.work_date?.message}>
           <Controller
             name="work_date"
             control={control}
             render={({ field }) => (
-              <ComboInput
+              <InputWithUndecided
                 value={field.value ?? ""}
                 onChange={field.onChange}
                 inputType="date"
@@ -144,34 +143,32 @@ export default function JobForm({ companyId }: { companyId: string }) {
             )}
           />
         </Field>
-        <Field label="開始時刻" error={errors.start_time?.message} width="w-36">
+        <Field label="開始時刻" error={errors.start_time?.message}>
           <Controller
             name="start_time"
             control={control}
             render={({ field }) => (
-              <ComboInput
+              <InputWithUndecided
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                presets={TIME_PRESETS}
                 inputType="text"
-                placeholder="HH:MM"
-                width="w-36"
+                placeholder="例: 09:00"
+                width="w-28"
               />
             )}
           />
         </Field>
-        <Field label="終了時刻" error={errors.end_time?.message} width="w-36">
+        <Field label="終了時刻" error={errors.end_time?.message}>
           <Controller
             name="end_time"
             control={control}
             render={({ field }) => (
-              <ComboInput
+              <InputWithUndecided
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                presets={TIME_PRESETS}
                 inputType="text"
-                placeholder="HH:MM"
-                width="w-36"
+                placeholder="例: 18:00"
+                width="w-28"
               />
             )}
           />
@@ -405,6 +402,58 @@ function ComboInput({
           className={`${width} rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2`}
         />
       )}
+    </div>
+  );
+}
+
+function InputWithUndecided({
+  value,
+  onChange,
+  inputType,
+  placeholder,
+  width,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  inputType: "text" | "number" | "date";
+  placeholder?: string;
+  width: string;
+}) {
+  const [undecided, setUndecided] = useState(value === "");
+
+  function toggleUndecided() {
+    if (undecided) {
+      setUndecided(false);
+    } else {
+      setUndecided(true);
+      onChange("");
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <input
+        type={inputType}
+        value={value}
+        disabled={undecided}
+        onChange={(e) => {
+          if (undecided) setUndecided(false);
+          onChange(e.target.value);
+        }}
+        placeholder={undecided ? "未定" : placeholder}
+        className={`${width} rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 disabled:opacity-60`}
+      />
+      <button
+        type="button"
+        onClick={toggleUndecided}
+        className={`text-xs px-2 py-1 rounded border whitespace-nowrap ${
+          undecided
+            ? "bg-brand-500/20 border-brand-500 text-brand-200"
+            : "border-slate-600 text-slate-300 hover:bg-slate-700"
+        }`}
+      >
+        未定
+      </button>
     </div>
   );
 }
