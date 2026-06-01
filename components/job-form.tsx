@@ -100,7 +100,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
         <input
           {...register("title")}
           placeholder="例: 交通誘導 札幌市中央区"
-          className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
@@ -119,7 +119,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
                       : (e.target.value as "day" | "night" | "business_trip")
                   )
                 }
-                className="w-32 rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white"
+                className="w-32 rounded-md border border-white px-3 py-2 bg-slate-800 text-white"
               >
                 <option value="day">日勤</option>
                 <option value="night">夜勤</option>
@@ -194,7 +194,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           <input
             {...register("location")}
             placeholder="例: 中央区大通西3丁目"
-            className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+            className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
       </div>
@@ -241,7 +241,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
                     v === "true" ? true : v === "false" ? false : null
                   );
                 }}
-                className="w-40 rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white"
+                className="w-40 rounded-md border border-white px-3 py-2 bg-slate-800 text-white"
               >
                 <option value="true">有</option>
                 <option value="false">無</option>
@@ -282,7 +282,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
                       : (e.target.value as "daily" | "hourly")
                   )
                 }
-                className="w-32 rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white"
+                className="w-32 rounded-md border border-white px-3 py-2 bg-slate-800 text-white"
               >
                 <option value="daily">日給</option>
                 <option value="hourly">時給</option>
@@ -298,7 +298,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           {...register("description")}
           rows={4}
           placeholder={"例:\n集合場所: 札幌駅北口ロータリー\n集合時間: 08:30\n服装: 制服・安全靴\n持ち物: 誘導棒・ヘルメット"}
-          className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
@@ -307,7 +307,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           {...register("notes")}
           rows={3}
           placeholder={"例:\n4時間未満は人工保障\n雨天決行\n初回顔合わせあり"}
-          className="w-full rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
+          className="w-full rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
@@ -382,7 +382,7 @@ function ComboInput({
       <select
         value={selectValue}
         onChange={handleSelectChange}
-        className={`${width} rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white`}
+        className={`${width} rounded-md border border-white px-3 py-2 bg-slate-800 text-white`}
       >
         {presetList.map((p) => (
           <option key={p} value={p}>
@@ -399,7 +399,7 @@ function ComboInput({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           inputMode={inputType === "text" ? "numeric" : undefined}
-          className={`${width} rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2`}
+          className={`${width} rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2`}
         />
       )}
     </div>
@@ -441,7 +441,7 @@ function InputWithUndecided({
           onChange(e.target.value);
         }}
         placeholder={undecided ? "未定" : placeholder}
-        className={`${width} rounded-md border border-slate-600 bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 disabled:opacity-60`}
+        className={`${width} rounded-md border border-white bg-slate-800 text-white placeholder:text-slate-500 px-3 py-2 disabled:opacity-60`}
       />
       <button
         type="button"
@@ -475,7 +475,7 @@ function SelectWithUndecided({
       onChange={(e) =>
         onChange(e.target.value === UNDECIDED ? "" : e.target.value)
       }
-      className={`${width} rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-white`}
+      className={`${width} rounded-md border border-white px-3 py-2 bg-slate-800 text-white`}
     >
       {options.map((p) => (
         <option key={p} value={p}>

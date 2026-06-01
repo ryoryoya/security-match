@@ -47,7 +47,7 @@ export default function InvitePanel({
           placeholder="相手の連絡先メール (任意)"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
+          className="flex-1 rounded-md border border-white bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
         />
         <button
           onClick={issue}
