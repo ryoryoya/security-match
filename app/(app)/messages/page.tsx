@@ -45,9 +45,9 @@ export default async function MessagesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900">メッセージ</h1>
+      <h1 className="text-2xl font-bold text-slate-100">メッセージ</h1>
       {threadList.length > 0 ? (
-        <div className="bg-white border border-slate-200 rounded-lg divide-y divide-slate-200">
+        <div className="bg-slate-800 border border-slate-700 rounded-lg divide-y divide-slate-700">
           {threadList.map((t) => {
             const otherId =
               t.company_a_id === session.company.id
@@ -59,12 +59,12 @@ export default async function MessagesPage() {
               <Link
                 key={t.id}
                 href={`/messages/${t.id}`}
-                className="block p-4 hover:bg-slate-50"
+                className="block p-4 hover:bg-slate-700"
               >
-                <p className="font-semibold text-slate-900">
+                <p className="font-semibold text-slate-100">
                   {other?.name ?? "(会社)"}
                 </p>
-                <p className="text-sm text-slate-600 mt-1">
+                <p className="text-sm text-slate-300 mt-1">
                   案件: {job?.title ?? "-"}
                 </p>
               </Link>
@@ -72,7 +72,7 @@ export default async function MessagesPage() {
           })}
         </div>
       ) : (
-        <div className="bg-white border border-dashed border-slate-300 rounded-lg p-10 text-center text-sm text-slate-500">
+        <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-10 text-center text-sm text-slate-400">
           まだメッセージスレッドはありません。案件の応募承認時に「チャットで連絡」から開始できます。
         </div>
       )}

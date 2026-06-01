@@ -57,9 +57,9 @@ export default async function JobDetailPage({
   return (
     <div className="max-w-3xl space-y-6">
       <div>
-        <p className="text-sm text-slate-500">{(jobCompany as Company)?.name}</p>
+        <p className="text-sm text-slate-400">{(jobCompany as Company)?.name}</p>
         <div className="flex items-center gap-2 mt-1 flex-wrap">
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-slate-100">
             {(job as Job).title}
           </h1>
           {(job as Job).status === "open" && isUrgent(job as Job) && (
@@ -70,7 +70,7 @@ export default async function JobDetailPage({
         </div>
       </div>
 
-      <section className="bg-white border border-slate-200 rounded-lg p-6 space-y-3">
+      <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-3">
         <Info label="作業日">{formatDate((job as Job).work_date)}</Info>
         <Info label="時間">
           {(job as Job).start_time && (job as Job).end_time
@@ -90,16 +90,16 @@ export default async function JobDetailPage({
         <Info label="ステータス">{statusLabel((job as Job).status)}</Info>
         {(job as Job).description && (
           <div>
-            <p className="text-sm text-slate-500 mb-1">業務内容</p>
-            <p className="whitespace-pre-wrap text-sm text-slate-700">
+            <p className="text-sm text-slate-400 mb-1">業務内容</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-200">
               {(job as Job).description}
             </p>
           </div>
         )}
         {(job as Job).notes && (
           <div>
-            <p className="text-sm text-slate-500 mb-1">備考</p>
-            <p className="whitespace-pre-wrap text-sm text-slate-700">
+            <p className="text-sm text-slate-400 mb-1">備考</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-200">
               {(job as Job).notes}
             </p>
           </div>
@@ -115,8 +115,8 @@ export default async function JobDetailPage({
       )}
 
       {isMine && (job as Job).status !== "open" && (
-        <section className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center justify-between gap-3 flex-wrap">
-          <div className="text-sm text-amber-800">
+        <section className="bg-amber-500/10 border border-amber-800 rounded-lg p-4 flex items-center justify-between gap-3 flex-wrap">
+          <div className="text-sm text-amber-200">
             この案件は現在「{statusLabel((job as Job).status)}」です。破談などで再度募集する場合は再募集できます。
           </div>
           <ReopenJobButton jobId={(job as Job).id} />
@@ -125,7 +125,7 @@ export default async function JobDetailPage({
 
       {isMine && (
         <section>
-          <h2 className="text-lg font-semibold text-slate-900 mb-3">
+          <h2 className="text-lg font-semibold text-slate-100 mb-3">
             応募一覧 ({(applications ?? []).length})
           </h2>
           {applications && applications.length > 0 ? (
@@ -144,7 +144,7 @@ export default async function JobDetailPage({
               ))}
             </div>
           ) : (
-            <div className="bg-white border border-dashed border-slate-300 rounded-lg p-8 text-center text-sm text-slate-500">
+            <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-8 text-center text-sm text-slate-400">
               まだ応募はありません。
             </div>
           )}
@@ -163,8 +163,8 @@ function Info({
 }) {
   return (
     <div className="flex gap-3">
-      <dt className="text-sm text-slate-500 w-20 shrink-0">{label}</dt>
-      <dd className="text-sm text-slate-900">{children}</dd>
+      <dt className="text-sm text-slate-400 w-20 shrink-0">{label}</dt>
+      <dd className="text-sm text-slate-100">{children}</dd>
     </div>
   );
 }

@@ -36,13 +36,13 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile header */}
-      <header className="md:hidden bg-white border-b border-slate-200 px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="font-bold text-slate-900">
+      <header className="md:hidden bg-slate-800 border-b border-slate-700 px-4 h-14 flex items-center justify-between">
+        <Link href="/" className="font-bold text-slate-100">
           security-match
         </Link>
         <button
           onClick={() => setOpen((v) => !v)}
-          className="text-slate-700 p-2"
+          className="text-slate-200 p-2"
           aria-label="menu"
         >
           ☰
@@ -52,13 +52,13 @@ export default function Sidebar({
       {/* Sidebar */}
       <aside
         className={clsx(
-          "bg-white border-r border-slate-200 md:w-64 md:shrink-0 md:sticky md:top-0 md:h-screen flex flex-col",
+          "bg-slate-800 border-r border-slate-700 md:w-64 md:shrink-0 md:sticky md:top-0 md:h-screen flex flex-col",
           open ? "block" : "hidden md:flex"
         )}
       >
-        <div className="hidden md:block p-6 border-b border-slate-200">
-          <p className="font-bold text-slate-900">security-match</p>
-          <p className="text-xs text-slate-500 mt-1 truncate">{companyName}</p>
+        <div className="hidden md:block p-6 border-b border-slate-700">
+          <p className="font-bold text-slate-100">security-match</p>
+          <p className="text-xs text-slate-400 mt-1 truncate">{companyName}</p>
         </div>
 
         <nav className="flex-1 p-3 space-y-1">
@@ -75,8 +75,8 @@ export default function Sidebar({
                 className={clsx(
                   "flex items-center gap-3 px-3 py-2 rounded-md text-sm",
                   active
-                    ? "bg-brand-50 text-brand-700 font-medium"
-                    : "text-slate-700 hover:bg-slate-100"
+                    ? "bg-sky-500/15 text-brand-300 font-medium"
+                    : "text-slate-200 hover:bg-slate-700"
                 )}
               >
                 <span>{item.icon}</span>
@@ -86,11 +86,11 @@ export default function Sidebar({
           })}
         </nav>
 
-        <div className="p-3 border-t border-slate-200 text-xs text-slate-500">
+        <div className="p-3 border-t border-slate-700 text-xs text-slate-400">
           <p className="px-3 py-1 truncate">{userName}</p>
           <button
             onClick={logout}
-            className="w-full text-left px-3 py-2 rounded hover:bg-slate-100 text-slate-700"
+            className="w-full text-left px-3 py-2 rounded hover:bg-slate-700 text-slate-200"
           >
             ログアウト
           </button>

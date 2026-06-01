@@ -7,7 +7,7 @@ const GRID_COLS = "md:grid-cols-[7rem_1fr_6rem_8rem_minmax(0,2fr)_7rem]";
 export function JobRowHeader() {
   return (
     <div
-      className={`hidden md:grid ${GRID_COLS} gap-4 px-4 py-2 text-xs font-medium text-slate-500 border-b border-slate-200`}
+      className={`hidden md:grid ${GRID_COLS} gap-4 px-4 py-2 text-xs font-medium text-slate-400 border-b border-slate-700`}
     >
       <div>日時</div>
       <div>場所</div>
@@ -30,15 +30,15 @@ export default function JobRow({
   return (
     <Link
       href={`/jobs/${job.id}`}
-      className={`group block bg-white border ${
+      className={`group block bg-slate-800 border ${
         urgent ? "border-l-4 border-l-red-500" : ""
-      } border-slate-200 rounded-lg hover:border-brand-500 hover:shadow-sm transition`}
+      } border-slate-700 rounded-lg hover:border-brand-500 hover:shadow-sm transition`}
     >
       <div className={`grid grid-cols-1 ${GRID_COLS} gap-2 md:gap-4 px-4 py-3 md:items-center`}>
         <Cell label="日時">
           <span className="font-medium md:font-normal">{formatDate(job.work_date)}</span>
           {job.start_time && job.end_time && (
-            <span className="text-slate-500">
+            <span className="text-slate-400">
               {" "}
               {job.start_time.slice(0, 5)}〜{job.end_time.slice(0, 5)}
             </span>
@@ -52,12 +52,12 @@ export default function JobRow({
         </Cell>
         <Cell label="単価" align="right">
           <span className="font-medium">¥{job.unit_price.toLocaleString()}</span>
-          <span className="text-slate-500">
+          <span className="text-slate-400">
             {job.price_type === "hourly" ? " / 時" : " / 日"}
           </span>
         </Cell>
         <Cell label="案件">
-          <span className="font-semibold text-slate-900 line-clamp-1">{job.title}</span>
+          <span className="font-semibold text-slate-100 line-clamp-1">{job.title}</span>
         </Cell>
         <div className="flex md:justify-end items-center gap-1 flex-wrap">
           {urgent && (
@@ -67,7 +67,7 @@ export default function JobRow({
           )}
           <StatusBadge status={job.status} />
           {mine && (
-            <span className="text-xs text-brand-600 shrink-0">自社</span>
+            <span className="text-xs text-brand-300 shrink-0">自社</span>
           )}
         </div>
       </div>
@@ -86,11 +86,11 @@ function Cell({
 }) {
   return (
     <div
-      className={`text-sm text-slate-700 min-w-0 ${
+      className={`text-sm text-slate-200 min-w-0 ${
         align === "right" ? "md:text-right" : ""
       }`}
     >
-      <span className="md:hidden text-xs text-slate-500 mr-1">{label}:</span>
+      <span className="md:hidden text-xs text-slate-400 mr-1">{label}:</span>
       <span className="break-words md:truncate md:block">{children}</span>
     </div>
   );
@@ -98,9 +98,9 @@ function Cell({
 
 function StatusBadge({ status }: { status: Job["status"] }) {
   const map: Record<Job["status"], { label: string; cls: string }> = {
-    open: { label: "募集中", cls: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-    filled: { label: "マッチング済み", cls: "bg-sky-50 text-sky-700 border-sky-200" },
-    closed: { label: "終了", cls: "bg-slate-100 text-slate-500 border-slate-200" },
+    open: { label: "募集中", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-800" },
+    filled: { label: "マッチング済み", cls: "bg-sky-500/15 text-sky-300 border-sky-800" },
+    closed: { label: "終了", cls: "bg-slate-700 text-slate-400 border-slate-600" },
   };
   const s = map[status];
   return (

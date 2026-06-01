@@ -38,7 +38,7 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-6 space-y-4">
+    <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4">
       <Field label="会社名" value={name} onChange={setName} />
       <Field
         label="代表者名"
@@ -48,13 +48,13 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
       <Field label="電話番号" value={phone} onChange={setPhone} />
       <Field label="住所" value={address} onChange={setAddress} />
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-1">
           都道府県
         </label>
         <select
           value={prefecture}
           onChange={(e) => setPrefecture(e.target.value)}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 bg-white"
+          className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-slate-100"
         >
           <option value="">選択</option>
           {PREFECTURES.map((p) => (
@@ -66,12 +66,12 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+        <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
           {error}
         </p>
       )}
       {message && (
-        <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-3 py-2">
+        <p className="text-sm text-emerald-300 bg-emerald-500/10 border border-emerald-800 rounded px-3 py-2">
           {message}
         </p>
       )}
@@ -100,14 +100,14 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-slate-200 mb-1">
         {label}
       </label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-slate-300 px-3 py-2"
+        className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
       />
     </div>
   );

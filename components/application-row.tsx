@@ -73,17 +73,17 @@ export default function ApplicationRow({
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-4">
+    <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-semibold text-slate-900">
+          <p className="font-semibold text-slate-100">
             {applicantCompany?.name ?? "(不明な会社)"}
           </p>
-          <p className="text-sm text-slate-600 mt-1">
+          <p className="text-sm text-slate-300 mt-1">
             出せる人数: <strong>{application.offered_count} 名</strong>
           </p>
           {application.note && (
-            <p className="text-sm text-slate-600 mt-1 whitespace-pre-wrap">
+            <p className="text-sm text-slate-300 mt-1 whitespace-pre-wrap">
               {application.note}
             </p>
           )}
@@ -104,7 +104,7 @@ export default function ApplicationRow({
               <button
                 onClick={() => updateStatus("rejected")}
                 disabled={loading}
-                className="border border-slate-300 text-slate-700 text-sm px-3 py-1.5 rounded hover:bg-slate-50"
+                className="border border-slate-600 text-slate-200 text-sm px-3 py-1.5 rounded hover:bg-slate-700"
               >
                 却下
               </button>
@@ -113,7 +113,7 @@ export default function ApplicationRow({
           <button
             onClick={startChat}
             disabled={loading}
-            className="border border-brand-300 text-brand-700 text-sm px-3 py-1.5 rounded hover:bg-brand-50"
+            className="border border-brand-500 text-brand-300 text-sm px-3 py-1.5 rounded hover:bg-sky-500/10"
           >
             チャットで連絡
           </button>
@@ -125,9 +125,9 @@ export default function ApplicationRow({
 
 function StatusPill({ status }: { status: Application["status"] }) {
   const map = {
-    pending: { label: "承認待ち", cls: "bg-amber-50 text-amber-700 border-amber-200" },
-    accepted: { label: "承認済み", cls: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-    rejected: { label: "却下", cls: "bg-slate-100 text-slate-500 border-slate-200" },
+    pending: { label: "承認待ち", cls: "bg-amber-500/15 text-amber-200 border-amber-800" },
+    accepted: { label: "承認済み", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-800" },
+    rejected: { label: "却下", cls: "bg-slate-700 text-slate-400 border-slate-600" },
   } as const;
   const s = map[status];
   return (

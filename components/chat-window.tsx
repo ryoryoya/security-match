@@ -75,7 +75,7 @@ export default function ChatWindow({
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-white border border-slate-200 rounded-lg overflow-hidden min-h-0">
+    <div className="flex-1 flex flex-col bg-slate-800 border border-slate-700 rounded-lg overflow-hidden min-h-0">
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-4 space-y-2 min-h-0"
@@ -97,14 +97,14 @@ export default function ChatWindow({
                   "max-w-[75%] rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap break-words",
                   mine
                     ? "bg-brand-500 text-white"
-                    : "bg-slate-100 text-slate-900"
+                    : "bg-slate-700 text-slate-100"
                 )}
               >
                 {m.body}
                 <div
                   className={clsx(
                     "text-[10px] mt-1",
-                    mine ? "text-brand-100" : "text-slate-500"
+                    mine ? "text-brand-100" : "text-slate-400"
                   )}
                 >
                   {formatTime(m.created_at)}
@@ -114,7 +114,7 @@ export default function ChatWindow({
           );
         })}
       </div>
-      <div className="border-t border-slate-200 p-3 flex gap-2">
+      <div className="border-t border-slate-700 p-3 flex gap-2">
         <input
           type="text"
           value={input}
@@ -126,7 +126,7 @@ export default function ChatWindow({
             }
           }}
           placeholder="メッセージを入力..."
-          className="flex-1 rounded-md border border-slate-300 px-3 py-2"
+          className="flex-1 rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
         />
         <button
           onClick={send}

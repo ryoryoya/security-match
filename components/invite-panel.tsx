@@ -41,13 +41,13 @@ export default function InvitePanel({
 
   return (
     <div className="space-y-4">
-      <div className="bg-white border border-slate-200 rounded-lg p-4 flex flex-col sm:flex-row gap-2">
+      <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 flex flex-col sm:flex-row gap-2">
         <input
           type="email"
           placeholder="相手の連絡先メール (任意)"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 rounded-md border border-slate-300 px-3 py-2"
+          className="flex-1 rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
         />
         <button
           onClick={issue}
@@ -58,13 +58,13 @@ export default function InvitePanel({
         </button>
       </div>
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+        <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
           {error}
         </p>
       )}
 
       {invitations.length > 0 ? (
-        <div className="bg-white border border-slate-200 rounded-lg divide-y divide-slate-200">
+        <div className="bg-slate-800 border border-slate-700 rounded-lg divide-y divide-slate-700">
           {invitations.map((inv) => {
             const used = !!inv.used_at;
             const expired = new Date(inv.expires_at) < new Date();
@@ -72,10 +72,10 @@ export default function InvitePanel({
               <div key={inv.id} className="p-4 text-sm">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="min-w-0">
-                    <p className="font-mono text-xs text-slate-500 truncate">
+                    <p className="font-mono text-xs text-slate-400 truncate">
                       /invite/{inv.token.slice(0, 10)}...
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-400 mt-1">
                       {inv.email && <>送信先: {inv.email} ・ </>}
                       期限: {new Date(inv.expires_at).toLocaleDateString("ja-JP")}
                       {used && " ・ 使用済み"}
@@ -85,7 +85,7 @@ export default function InvitePanel({
                   {!used && !expired && (
                     <button
                       onClick={() => copyLink(inv.token)}
-                      className="text-xs border border-slate-300 px-3 py-1 rounded hover:bg-slate-50"
+                      className="text-xs border border-slate-600 px-3 py-1 rounded hover:bg-slate-700"
                     >
                       {copied === inv.token ? "コピー済" : "URLコピー"}
                     </button>
@@ -96,7 +96,7 @@ export default function InvitePanel({
           })}
         </div>
       ) : (
-        <div className="bg-white border border-dashed border-slate-300 rounded-lg p-6 text-center text-sm text-slate-500">
+        <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-6 text-center text-sm text-slate-400">
           まだ招待は発行されていません。
         </div>
       )}

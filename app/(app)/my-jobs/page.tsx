@@ -16,7 +16,7 @@ export default async function MyJobsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">自社案件</h1>
+        <h1 className="text-2xl font-bold text-slate-100">自社案件</h1>
         <Link
           href="/jobs/new"
           className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded"
@@ -32,7 +32,7 @@ export default async function MyJobsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-white border border-dashed border-slate-300 rounded-lg p-10 text-center text-sm text-slate-500">
+        <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-10 text-center text-sm text-slate-400">
           まだ自社案件はありません。
         </div>
       )}

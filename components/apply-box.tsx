@@ -65,18 +65,18 @@ export default function ApplyBox({
   }
 
   return (
-    <section className="bg-brand-50 border border-brand-100 rounded-lg p-6">
-      <h2 className="text-lg font-semibold text-brand-700 mb-1">
+    <section className="bg-sky-500/10 border border-sky-800 rounded-lg p-6">
+      <h2 className="text-lg font-semibold text-brand-300 mb-1">
         {existing ? "応募内容を更新" : "この案件に応募する"}
       </h2>
       {existing && (
-        <p className="text-xs text-brand-600 mb-3">
+        <p className="text-xs text-brand-300 mb-3">
           現在の状態: {statusLabel(existing.status)}
         </p>
       )}
       <div className="space-y-3">
         <div>
-          <label className="block text-sm text-slate-700 mb-1">
+          <label className="block text-sm text-slate-200 mb-1">
             出せる人数
           </label>
           <input
@@ -84,21 +84,21 @@ export default function ApplyBox({
             min={1}
             value={offered}
             onChange={(e) => setOffered(parseInt(e.target.value, 10) || 1)}
-            className="w-32 rounded-md border border-slate-300 px-3 py-2"
+            className="w-32 rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-700 mb-1">一言メモ</label>
+          <label className="block text-sm text-slate-200 mb-1">一言メモ</label>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={3}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
             placeholder="例: 交通誘導2級保有者2名出せます"
           />
         </div>
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+          <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
             {error}
           </p>
         )}
@@ -114,7 +114,7 @@ export default function ApplyBox({
             <button
               onClick={cancel}
               disabled={loading}
-              className="border border-red-300 text-red-600 px-4 py-2 rounded hover:bg-red-50"
+              className="border border-red-800 text-red-300 px-4 py-2 rounded hover:bg-red-500/10"
             >
               応募取消
             </button>

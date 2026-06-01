@@ -61,13 +61,13 @@ export default function JobForm({ companyId }: { companyId: string }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white border border-slate-200 rounded-lg p-6 space-y-4"
+      className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-4"
     >
       <Field label="タイトル" error={errors.title?.message} required>
         <input
           {...register("title")}
           placeholder="例: 交通誘導 札幌市中央区"
-          className="w-full rounded-md border border-slate-300 px-3 py-2"
+          className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
@@ -76,7 +76,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           <input
             type="date"
             {...register("work_date")}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
         <Field label="開始時刻" error={errors.start_time?.message}>
@@ -84,7 +84,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
             {...register("start_time")}
             placeholder="例: 09:00"
             inputMode="numeric"
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
         <Field label="終了時刻" error={errors.end_time?.message}>
@@ -92,7 +92,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
             {...register("end_time")}
             placeholder="例: 18:00"
             inputMode="numeric"
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
       </div>
@@ -101,7 +101,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
         <Field label="都道府県">
           <select
             {...register("prefecture")}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 bg-white"
+            className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-slate-100"
           >
             <option value="">選択</option>
             {PREFECTURES.map((p) => (
@@ -115,7 +115,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           <input
             {...register("location")}
             placeholder="例: 中央区大通西3丁目"
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
       </div>
@@ -130,7 +130,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
             type="number"
             min={1}
             {...register("required_count")}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
         <Field label="単価" error={errors.unit_price?.message} required>
@@ -139,13 +139,13 @@ export default function JobForm({ companyId }: { companyId: string }) {
             min={0}
             step={100}
             {...register("unit_price")}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
           />
         </Field>
         <Field label="単価種別">
           <select
             {...register("price_type")}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 bg-white"
+            className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-slate-100"
           >
             <option value="daily">日給</option>
             <option value="hourly">時給</option>
@@ -158,7 +158,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           {...register("description")}
           rows={4}
           placeholder={"例:\n集合場所: 札幌駅北口ロータリー\n集合時間: 08:30\n服装: 制服・安全靴\n持ち物: 誘導棒・ヘルメット"}
-          className="w-full rounded-md border border-slate-300 px-3 py-2"
+          className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
@@ -167,12 +167,12 @@ export default function JobForm({ companyId }: { companyId: string }) {
           {...register("notes")}
           rows={3}
           placeholder={"例:\n4時間未満は人工保障\n雨天決行\n初回顔合わせあり"}
-          className="w-full rounded-md border border-slate-300 px-3 py-2"
+          className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2"
         />
       </Field>
 
       {serverError && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+        <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
           {serverError}
         </p>
       )}
@@ -181,7 +181,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-4 py-2 rounded border border-slate-300 text-slate-700 hover:bg-slate-50"
+          className="px-4 py-2 rounded border border-slate-600 text-slate-200 hover:bg-slate-700"
         >
           キャンセル
         </button>
@@ -210,12 +210,12 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-slate-200 mb-1">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       {children}
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-red-300 mt-1">{error}</p>}
     </div>
   );
 }

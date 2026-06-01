@@ -45,7 +45,7 @@ export default async function JobsListPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">案件一覧</h1>
+        <h1 className="text-2xl font-bold text-slate-100">案件一覧</h1>
         <Link
           href="/jobs/new"
           className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-md transition"
@@ -56,14 +56,14 @@ export default async function JobsListPage({
 
       <form
         method="get"
-        className="bg-white border border-slate-200 rounded-lg p-4 flex flex-wrap gap-3"
+        className="bg-slate-800 border border-slate-700 rounded-lg p-4 flex flex-wrap gap-3"
       >
         <div>
-          <label className="block text-xs text-slate-500 mb-1">都道府県</label>
+          <label className="block text-xs text-slate-400 mb-1">都道府県</label>
           <select
             name="prefecture"
             defaultValue={sp.prefecture ?? ""}
-            className="rounded border border-slate-300 px-3 py-1.5 text-sm bg-white"
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-slate-100"
           >
             <option value="">すべて</option>
             {PREFECTURES.map((p) => (
@@ -74,13 +74,13 @@ export default async function JobsListPage({
           </select>
         </div>
         <div>
-          <label className="block text-xs text-slate-500 mb-1">
+          <label className="block text-xs text-slate-400 mb-1">
             ステータス
           </label>
           <select
             name="status"
             defaultValue={sp.status ?? "open"}
-            className="rounded border border-slate-300 px-3 py-1.5 text-sm bg-white"
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-slate-100"
           >
             <option value="open">募集中</option>
             <option value="filled">マッチング済み</option>
@@ -88,11 +88,11 @@ export default async function JobsListPage({
           </select>
         </div>
         <div>
-          <label className="block text-xs text-slate-500 mb-1">並び順</label>
+          <label className="block text-xs text-slate-400 mb-1">並び順</label>
           <select
             name="sort"
             defaultValue={sort}
-            className="rounded border border-slate-300 px-3 py-1.5 text-sm bg-white"
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-slate-100"
           >
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>
@@ -104,14 +104,14 @@ export default async function JobsListPage({
         <div className="flex items-end">
           <button
             type="submit"
-            className="bg-slate-900 text-white text-sm px-4 py-1.5 rounded hover:bg-slate-700"
+            className="bg-slate-700 text-slate-100 text-sm px-4 py-1.5 rounded hover:bg-slate-600"
           >
             適用
           </button>
         </div>
       </form>
 
-      {error && <p className="text-sm text-red-600">{error.message}</p>}
+      {error && <p className="text-sm text-red-300">{error.message}</p>}
 
       {jobs && jobs.length > 0 ? (
         <div>
@@ -123,7 +123,7 @@ export default async function JobsListPage({
           </div>
         </div>
       ) : (
-        <div className="bg-white border border-dashed border-slate-300 rounded-lg p-10 text-center text-sm text-slate-500">
+        <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-10 text-center text-sm text-slate-400">
           条件に合う案件はまだありません。
         </div>
       )}

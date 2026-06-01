@@ -46,10 +46,10 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">
+        <h1 className="text-2xl font-bold text-slate-100">
           こんにちは、{session.profile.display_name ?? ""}さん
         </h1>
-        <p className="text-sm text-slate-500 mt-1">{session.company.name}</p>
+        <p className="text-sm text-slate-400 mt-1">{session.company.name}</p>
       </div>
 
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -77,12 +77,12 @@ export default async function DashboardPage() {
 
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-100">
             最新の他社案件
           </h2>
           <Link
             href="/jobs"
-            className="text-sm text-brand-600 hover:underline"
+            className="text-sm text-brand-300 hover:underline"
           >
             すべて見る →
           </Link>
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold text-slate-900 mb-3">
+        <h2 className="text-lg font-semibold text-slate-100 mb-3">
           自社の募集中案件
         </h2>
         {myOpenJobs && myOpenJobs.length > 0 ? (
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
         ) : (
           <EmptyCard>
             募集中の案件はありません。{" "}
-            <Link href="/jobs/new" className="text-brand-600 hover:underline">
+            <Link href="/jobs/new" className="text-brand-300 hover:underline">
               案件を投稿する
             </Link>
           </EmptyCard>
@@ -133,17 +133,17 @@ function StatCard({
   return (
     <Link
       href={href}
-      className="bg-white border border-slate-200 rounded-lg p-4 hover:border-brand-500 transition"
+      className="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-brand-500 transition"
     >
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
+      <p className="text-xs text-slate-400">{label}</p>
+      <p className="text-2xl font-bold text-slate-100 mt-1">{value}</p>
     </Link>
   );
 }
 
 function EmptyCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-dashed border-slate-300 rounded-lg p-6 text-center text-sm text-slate-500">
+    <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-6 text-center text-sm text-slate-400">
       {children}
     </div>
   );

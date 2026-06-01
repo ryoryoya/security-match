@@ -11,10 +11,10 @@ export default function JobCard({
   return (
     <Link
       href={`/jobs/${job.id}`}
-      className="block bg-white border border-slate-200 rounded-lg p-4 hover:border-brand-500 hover:shadow-sm transition"
+      className="block bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-brand-500 hover:shadow-sm transition"
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="font-semibold text-slate-900 line-clamp-1">
+        <h3 className="font-semibold text-slate-100 line-clamp-1">
           {job.title}
         </h3>
         <div className="flex items-center gap-1 shrink-0">
@@ -22,7 +22,7 @@ export default function JobCard({
           <StatusBadge status={job.status} />
         </div>
       </div>
-      <dl className="text-sm text-slate-600 space-y-1">
+      <dl className="text-sm text-slate-300 space-y-1">
         <Row label="日時">
           {formatDate(job.work_date)}
           {job.start_time && job.end_time
@@ -39,7 +39,7 @@ export default function JobCard({
         </Row>
       </dl>
       {mine && (
-        <p className="mt-2 text-xs text-brand-600">自社投稿</p>
+        <p className="mt-2 text-xs text-brand-300">自社投稿</p>
       )}
     </Link>
   );
@@ -54,7 +54,7 @@ function Row({
 }) {
   return (
     <div className="flex gap-2">
-      <dt className="text-slate-500 w-16 shrink-0">{label}</dt>
+      <dt className="text-slate-400 w-16 shrink-0">{label}</dt>
       <dd className="min-w-0 truncate">{children}</dd>
     </div>
   );
@@ -62,9 +62,9 @@ function Row({
 
 function StatusBadge({ status }: { status: Job["status"] }) {
   const map: Record<Job["status"], { label: string; cls: string }> = {
-    open: { label: "募集中", cls: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-    filled: { label: "マッチング済み", cls: "bg-sky-50 text-sky-700 border-sky-200" },
-    closed: { label: "終了", cls: "bg-slate-100 text-slate-500 border-slate-200" },
+    open: { label: "募集中", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-800" },
+    filled: { label: "マッチング済み", cls: "bg-sky-500/15 text-sky-300 border-sky-800" },
+    closed: { label: "終了", cls: "bg-slate-700 text-slate-400 border-slate-600" },
   };
   const s = map[status];
   return (

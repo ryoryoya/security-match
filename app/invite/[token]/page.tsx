@@ -98,11 +98,11 @@ export default function InvitePage() {
   if (lookupError) {
     return (
       <main className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md bg-white border border-red-200 rounded-xl p-6 text-center">
-          <h1 className="text-lg font-bold text-red-600 mb-2">
+        <div className="max-w-md bg-slate-800 border border-red-800 rounded-xl p-6 text-center">
+          <h1 className="text-lg font-bold text-red-300 mb-2">
             招待リンクが無効です
           </h1>
-          <p className="text-sm text-slate-600">{lookupError}</p>
+          <p className="text-sm text-slate-300">{lookupError}</p>
         </div>
       </main>
     );
@@ -111,7 +111,7 @@ export default function InvitePage() {
   if (!info) {
     return (
       <main className="min-h-screen flex items-center justify-center">
-        <p className="text-slate-500">読み込み中...</p>
+        <p className="text-slate-400">読み込み中...</p>
       </main>
     );
   }
@@ -119,11 +119,11 @@ export default function InvitePage() {
   if (!info.valid) {
     return (
       <main className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md bg-white border border-amber-200 rounded-xl p-6 text-center">
-          <h1 className="text-lg font-bold text-amber-700 mb-2">
+        <div className="max-w-md bg-slate-800 border border-amber-800 rounded-xl p-6 text-center">
+          <h1 className="text-lg font-bold text-amber-200 mb-2">
             この招待リンクは利用できません
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-300">
             期限切れまたは既に使用されています。招待元の会社にご連絡ください。
           </p>
         </div>
@@ -133,12 +133,12 @@ export default function InvitePage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-        <p className="text-xs text-brand-600 font-medium mb-1">招待</p>
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">
+      <div className="w-full max-w-lg bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-8">
+        <p className="text-xs text-brand-300 font-medium mb-1">招待</p>
+        <h1 className="text-2xl font-bold text-slate-100 mb-1">
           {info.inviting_company_name} からの招待
         </h1>
-        <p className="text-sm text-slate-500 mb-6">
+        <p className="text-sm text-slate-400 mb-6">
           会社情報とアカウント情報を入力してサインアップしてください。
         </p>
 
@@ -178,13 +178,13 @@ export default function InvitePage() {
           <Field label="電話番号" value={phone} onChange={setPhone} />
           <Field label="住所" value={address} onChange={setAddress} />
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               都道府県
             </label>
             <select
               value={prefecture}
               onChange={(e) => setPrefecture(e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-slate-600 px-3 py-2 bg-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">選択してください</option>
               {PREFECTURES.map((p) => (
@@ -196,7 +196,7 @@ export default function InvitePage() {
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+            <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
               {error}
             </p>
           )}
@@ -230,7 +230,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-slate-200 mb-1">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -240,7 +240,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         minLength={minLength}
-        className="w-full rounded-md border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </div>
   );

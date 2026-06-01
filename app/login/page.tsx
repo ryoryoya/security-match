@@ -29,17 +29,17 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">
+      <div className="w-full max-w-md bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-8">
+        <h1 className="text-2xl font-bold text-slate-100 mb-1">
           security-match
         </h1>
-        <p className="text-sm text-slate-500 mb-6">
+        <p className="text-sm text-slate-400 mb-6">
           警備会社向け 人員マッチングネットワーク
         </p>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               メールアドレス
             </label>
             <input
@@ -47,11 +47,11 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-slate-200 mb-1">
               パスワード
             </label>
             <input
@@ -59,11 +59,11 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+            <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
               {error}
             </p>
           )}
@@ -76,14 +76,14 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-slate-200 text-sm text-slate-600 space-y-2">
+        <div className="mt-6 pt-6 border-t border-slate-700 text-sm text-slate-300 space-y-2">
           <p>
             初めてご利用の方は、既存メンバーから届いた
             <strong>招待リンク</strong>からサインアップしてください。
           </p>
           <p>
             まだネットワークに会社がない場合は{" "}
-            <Link href="/signup" className="text-brand-600 hover:underline">
+            <Link href="/signup" className="text-brand-300 hover:underline">
               初回会社登録
             </Link>
             から。

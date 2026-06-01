@@ -47,18 +47,18 @@ export default async function ThreadPage({
       <div className="mb-4">
         <Link
           href="/messages"
-          className="text-sm text-slate-500 hover:text-slate-900"
+          className="text-sm text-slate-400 hover:text-slate-100"
         >
           ← メッセージ一覧
         </Link>
-        <h1 className="text-xl font-bold text-slate-900 mt-1">
+        <h1 className="text-xl font-bold text-slate-100 mt-1">
           {(otherCompany as Company)?.name}
         </h1>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-slate-400">
           案件:{" "}
           <Link
             href={`/jobs/${thread.job_id}`}
-            className="text-brand-600 hover:underline"
+            className="text-brand-300 hover:underline"
           >
             {(job as Pick<Job, "id" | "title" | "work_date">)?.title}
           </Link>
