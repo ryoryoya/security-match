@@ -4,12 +4,20 @@
 export type CompanyRole = "owner" | "member";
 export type JobStatus = "open" | "filled" | "closed";
 export type PriceType = "daily" | "hourly";
+export type ShiftType = "day" | "night" | "business_trip";
 export type ApplicationStatus = "pending" | "accepted" | "rejected";
+
+export const SHIFT_LABEL: Record<ShiftType, string> = {
+  day: "日勤",
+  night: "夜勤",
+  business_trip: "出張",
+};
 
 export interface Company {
   id: string;
   name: string;
   representative: string | null;
+  contact_person: string | null;
   phone: string | null;
   address: string | null;
   prefecture: string | null;
@@ -29,14 +37,16 @@ export interface Job {
   id: string;
   company_id: string;
   title: string;
-  work_date: string;
+  work_date: string | null;
   start_time: string | null;
   end_time: string | null;
   location: string | null;
   prefecture: string | null;
-  required_count: number;
-  unit_price: number;
-  price_type: PriceType;
+  required_count: number | null;
+  unit_price: number | null;
+  price_type: PriceType | null;
+  shift_type: ShiftType | null;
+  designated_route: boolean | null;
   description: string | null;
   notes: string | null;
   status: JobStatus;

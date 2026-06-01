@@ -12,6 +12,9 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
   const [representative, setRepresentative] = useState(
     company.representative ?? ""
   );
+  const [contactPerson, setContactPerson] = useState(
+    company.contact_person ?? ""
+  );
   const [phone, setPhone] = useState(company.phone ?? "");
   const [address, setAddress] = useState(company.address ?? "");
   const [prefecture, setPrefecture] = useState(company.prefecture ?? "");
@@ -26,7 +29,14 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
     const supabase = createClient();
     const { error } = await supabase
       .from("companies")
-      .update({ name, representative, phone, address, prefecture })
+      .update({
+        name,
+        representative,
+        contact_person: contactPerson,
+        phone,
+        address,
+        prefecture,
+      })
       .eq("id", company.id);
     setLoading(false);
     if (error) {
@@ -44,6 +54,11 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
         label="代表者名"
         value={representative}
         onChange={setRepresentative}
+      />
+      <Field
+        label="管制員 / 担当者名"
+        value={contactPerson}
+        onChange={setContactPerson}
       />
       <Field label="電話番号" value={phone} onChange={setPhone} />
       <Field label="住所" value={address} onChange={setAddress} />

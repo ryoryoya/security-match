@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Job } from "@/lib/types";
+import { SHIFT_LABEL } from "@/lib/types";
 import { isUrgent } from "@/components/job-card";
 
 const GRID_COLS = "md:grid-cols-[7rem_1fr_6rem_8rem_minmax(0,2fr)_7rem]";
@@ -11,7 +12,7 @@ export function JobRowHeader() {
     >
       <div>日時</div>
       <div>場所</div>
-      <div className="text-right">必要人数</div>
+      <div className="text-right">必要人工</div>
       <div className="text-right">単価</div>
       <div>案件名</div>
       <div className="text-right">状態</div>
@@ -36,7 +37,9 @@ export default function JobRow({
     >
       <div className={`grid grid-cols-1 ${GRID_COLS} gap-2 md:gap-4 px-4 py-3 md:items-center`}>
         <Cell label="日時">
-          <span className="font-medium md:font-normal">{formatDate(job.work_date)}</span>
+          <span className="font-medium md:font-normal">
+            {job.work_date ? formatDate(job.work_date) : "未定"}
+          </span>
           {job.start_time && job.end_time && (
             <span className="text-slate-400">
               {" "}
@@ -47,19 +50,34 @@ export default function JobRow({
         <Cell label="場所">
           {[job.prefecture, job.location].filter(Boolean).join(" ") || "-"}
         </Cell>
-        <Cell label="必要人数" align="right">
-          {job.required_count} 名
+        <Cell label="必要人工" align="right">
+          {job.required_count == null ? "未定" : `${job.required_count} 名`}
         </Cell>
         <Cell label="単価" align="right">
-          <span className="font-medium">¥{job.unit_price.toLocaleString()}</span>
-          <span className="text-slate-400">
-            {job.price_type === "hourly" ? " / 時" : " / 日"}
-          </span>
+          {job.unit_price == null ? (
+            <span>未定</span>
+          ) : (
+            <>
+              <span className="font-medium">¥{job.unit_price.toLocaleString()}</span>
+              <span className="text-slate-400">
+                {job.price_type === "hourly"
+                  ? " / 時"
+                  : job.price_type === "daily"
+                    ? " / 日"
+                    : ""}
+              </span>
+            </>
+          )}
         </Cell>
         <Cell label="案件">
           <span className="font-semibold text-white line-clamp-1">{job.title}</span>
         </Cell>
         <div className="flex md:justify-end items-center gap-1 flex-wrap">
+          {job.shift_type && (
+            <span className="text-xs px-2 py-0.5 rounded border bg-slate-700 text-slate-200 border-slate-600 shrink-0">
+              {SHIFT_LABEL[job.shift_type]}
+            </span>
+          )}
           {urgent && (
             <span className="text-xs px-2 py-0.5 rounded bg-red-600 text-white font-semibold animate-pulse shrink-0">
               至急

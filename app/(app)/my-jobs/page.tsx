@@ -21,7 +21,7 @@ export default async function MyJobsPage() {
           href="/jobs/new"
           className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded"
         >
-          + 新規投稿
+          + 新規募集
         </Link>
       </div>
 

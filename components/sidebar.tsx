@@ -9,7 +9,7 @@ import { clsx } from "clsx";
 const NAV = [
   { href: "/", label: "ダッシュボード", icon: "🏠" },
   { href: "/jobs", label: "案件一覧", icon: "📋" },
-  { href: "/jobs/new", label: "案件を投稿", icon: "➕" },
+  { href: "/jobs/new", label: "案件を募集", icon: "➕" },
   { href: "/my-jobs", label: "自社案件", icon: "🏢" },
   { href: "/messages", label: "メッセージ", icon: "💬" },
   { href: "/settings", label: "会社設定", icon: "⚙️" },
@@ -36,13 +36,13 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile header */}
-      <header className="md:hidden bg-slate-800 border-b border-slate-700 px-4 h-14 flex items-center justify-between">
+      <header className="md:hidden bg-slate-800 border-b border-slate-700 px-4 h-16 flex items-center justify-between">
         <Link href="/" className="font-bold text-white">
           security-match
         </Link>
         <button
           onClick={() => setOpen((v) => !v)}
-          className="text-slate-200 p-2"
+          className="text-slate-100 p-3 rounded-md hover:bg-slate-700 active:bg-slate-600 text-3xl leading-none w-12 h-12 flex items-center justify-center"
           aria-label="menu"
         >
           ☰

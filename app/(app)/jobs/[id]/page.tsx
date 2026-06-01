@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { Application, Company, Job } from "@/lib/types";
+import { SHIFT_LABEL } from "@/lib/types";
 import ApplyBox from "@/components/apply-box";
 import ApplicationRow from "@/components/application-row";
 import ReopenJobButton from "@/components/reopen-job-button";
@@ -71,21 +72,48 @@ export default async function JobDetailPage({
       </div>
 
       <section className="bg-slate-800 border border-slate-700 rounded-lg p-6 space-y-3">
-        <Info label="作業日">{formatDate((job as Job).work_date)}</Info>
+        <Info label="勤務区分">
+          {(job as Job).shift_type
+            ? SHIFT_LABEL[(job as Job).shift_type!]
+            : "未定"}
+        </Info>
+        <Info label="作業日">
+          {(job as Job).work_date
+            ? formatDate((job as Job).work_date!)
+            : "未定"}
+        </Info>
         <Info label="時間">
           {(job as Job).start_time && (job as Job).end_time
             ? `${(job as Job).start_time!.slice(0, 5)} 〜 ${(job as Job).end_time!.slice(0, 5)}`
-            : "未指定"}
+            : "未定"}
         </Info>
         <Info label="場所">
           {[(job as Job).prefecture, (job as Job).location]
             .filter(Boolean)
             .join(" ") || "-"}
         </Info>
-        <Info label="必要人数">{(job as Job).required_count} 名</Info>
+        <Info label="必要人工">
+          {(job as Job).required_count == null
+            ? "未定"
+            : `${(job as Job).required_count} 名`}
+        </Info>
+        <Info label="指定路線(資格者配置)">
+          {(job as Job).designated_route === true
+            ? "有"
+            : (job as Job).designated_route === false
+              ? "無"
+              : "未定"}
+        </Info>
         <Info label="単価">
-          ¥{(job as Job).unit_price.toLocaleString()}
-          {(job as Job).price_type === "hourly" ? " / 時" : " / 日"}
+          {(job as Job).unit_price == null
+            ? "未定"
+            : `¥${(job as Job).unit_price!.toLocaleString()}${
+                (job as Job).price_type === "hourly"
+                  ? " / 時"
+                  : (job as Job).price_type === "daily"
+                    ? " / 日"
+                    : ""
+              }`}
         </Info>
         <Info label="ステータス">{statusLabel((job as Job).status)}</Info>
         {(job as Job).description && (

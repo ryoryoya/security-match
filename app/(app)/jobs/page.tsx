@@ -2,8 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireSession } from "@/lib/auth";
 import JobRow, { JobRowHeader } from "@/components/job-row";
-import type { Job } from "@/lib/types";
-import { PREFECTURES } from "@/lib/types";
+import type { Job, ShiftType } from "@/lib/types";
+import { PREFECTURES, SHIFT_LABEL } from "@/lib/types";
 
 type Sort = "date_asc" | "price_desc" | "created_desc";
 
@@ -16,7 +16,12 @@ const SORTS: { value: Sort; label: string }[] = [
 export default async function JobsListPage({
   searchParams,
 }: {
-  searchParams: Promise<{ prefecture?: string; status?: string; sort?: string }>;
+  searchParams: Promise<{
+    prefecture?: string;
+    status?: string;
+    sort?: string;
+    shift?: string;
+  }>;
 }) {
   await requireSession();
   const supabase = await createClient();
@@ -26,8 +31,14 @@ export default async function JobsListPage({
     ? (sp.sort as Sort)
     : "date_asc";
 
+  const validShifts: ShiftType[] = ["day", "night", "business_trip"];
+  const shiftFilter = validShifts.includes(sp.shift as ShiftType)
+    ? (sp.shift as ShiftType)
+    : undefined;
+
   let query = supabase.from("jobs").select("*");
   if (sp.prefecture) query = query.eq("prefecture", sp.prefecture);
+  if (shiftFilter) query = query.eq("shift_type", shiftFilter);
   query = query.eq("status", sp.status ?? "open");
 
   if (sort === "price_desc") {
@@ -50,7 +61,7 @@ export default async function JobsListPage({
           href="/jobs/new"
           className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-md transition"
         >
-          + 案件を投稿
+          + 案件を募集
         </Link>
       </div>
 
@@ -69,6 +80,21 @@ export default async function JobsListPage({
             {PREFECTURES.map((p) => (
               <option key={p} value={p}>
                 {p}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">勤務区分</label>
+          <select
+            name="shift"
+            defaultValue={shiftFilter ?? ""}
+            className="rounded border border-slate-600 px-3 py-1.5 text-sm bg-slate-800 text-white"
+          >
+            <option value="">すべて</option>
+            {(Object.keys(SHIFT_LABEL) as ShiftType[]).map((s) => (
+              <option key={s} value={s}>
+                {SHIFT_LABEL[s]}
               </option>
             ))}
           </select>

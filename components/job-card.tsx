@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Job } from "@/lib/types";
+import { SHIFT_LABEL } from "@/lib/types";
 
 export default function JobCard({
   job,
@@ -18,13 +19,18 @@ export default function JobCard({
           {job.title}
         </h3>
         <div className="flex items-center gap-1 shrink-0">
+          {job.shift_type && (
+            <span className="text-xs px-2 py-0.5 rounded border bg-slate-700 text-slate-200 border-slate-600">
+              {SHIFT_LABEL[job.shift_type]}
+            </span>
+          )}
           {job.status === "open" && isUrgent(job) && <UrgentBadge />}
           <StatusBadge status={job.status} />
         </div>
       </div>
       <dl className="text-sm text-slate-200 space-y-1">
         <Row label="日時">
-          {formatDate(job.work_date)}
+          {job.work_date ? formatDate(job.work_date) : "未定"}
           {job.start_time && job.end_time
             ? ` ${job.start_time.slice(0, 5)}〜${job.end_time.slice(0, 5)}`
             : ""}
@@ -32,10 +38,19 @@ export default function JobCard({
         <Row label="場所">
           {[job.prefecture, job.location].filter(Boolean).join(" ") || "-"}
         </Row>
-        <Row label="必要人数">{job.required_count} 名</Row>
+        <Row label="必要人工">
+          {job.required_count == null ? "未定" : `${job.required_count} 名`}
+        </Row>
         <Row label="単価">
-          ¥{job.unit_price.toLocaleString()}
-          {job.price_type === "hourly" ? " / 時" : " / 日"}
+          {job.unit_price == null
+            ? "未定"
+            : `¥${job.unit_price.toLocaleString()}${
+                job.price_type === "hourly"
+                  ? " / 時"
+                  : job.price_type === "daily"
+                    ? " / 日"
+                    : ""
+              }`}
         </Row>
       </dl>
       {mine && (
