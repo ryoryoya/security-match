@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import type { Application, Company, Job } from "@/lib/types";
 import ApplyBox from "@/components/apply-box";
 import ApplicationRow from "@/components/application-row";
+import ReopenJobButton from "@/components/reopen-job-button";
+import { isUrgent } from "@/components/job-card";
 
 export default async function JobDetailPage({
   params,
@@ -56,9 +58,16 @@ export default async function JobDetailPage({
     <div className="max-w-3xl space-y-6">
       <div>
         <p className="text-sm text-slate-500">{(jobCompany as Company)?.name}</p>
-        <h1 className="text-2xl font-bold text-slate-900 mt-1">
-          {(job as Job).title}
-        </h1>
+        <div className="flex items-center gap-2 mt-1 flex-wrap">
+          <h1 className="text-2xl font-bold text-slate-900">
+            {(job as Job).title}
+          </h1>
+          {(job as Job).status === "open" && isUrgent(job as Job) && (
+            <span className="text-xs px-2 py-0.5 rounded border bg-red-600 text-white border-red-700 font-semibold animate-pulse">
+              至急案件
+            </span>
+          )}
+        </div>
       </div>
 
       <section className="bg-white border border-slate-200 rounded-lg p-6 space-y-3">
@@ -95,6 +104,15 @@ export default async function JobDetailPage({
           companyId={session.company.id}
           existing={myApplication ?? null}
         />
+      )}
+
+      {isMine && (job as Job).status !== "open" && (
+        <section className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center justify-between gap-3 flex-wrap">
+          <div className="text-sm text-amber-800">
+            この案件は現在「{statusLabel((job as Job).status)}」です。破談などで再度募集する場合は再募集できます。
+          </div>
+          <ReopenJobButton jobId={(job as Job).id} />
+        </section>
       )}
 
       {isMine && (
@@ -149,5 +167,5 @@ function formatDate(d: string) {
 }
 
 function statusLabel(status: Job["status"]) {
-  return { open: "募集中", filled: "充足", closed: "終了" }[status];
+  return { open: "募集中", filled: "マッチング済み", closed: "終了" }[status];
 }

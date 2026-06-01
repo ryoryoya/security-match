@@ -65,7 +65,7 @@ export default async function JobsListPage({
             className="rounded border border-slate-300 px-3 py-1.5 text-sm bg-white"
           >
             <option value="open">募集中</option>
-            <option value="filled">充足</option>
+            <option value="filled">マッチング済み</option>
             <option value="closed">終了</option>
           </select>
         </div>
