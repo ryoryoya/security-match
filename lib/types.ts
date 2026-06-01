@@ -38,6 +38,7 @@ export interface Job {
   unit_price: number;
   price_type: PriceType;
   description: string | null;
+  notes: string | null;
   status: JobStatus;
   created_at: string;
 }

@@ -90,9 +90,17 @@ export default async function JobDetailPage({
         <Info label="ステータス">{statusLabel((job as Job).status)}</Info>
         {(job as Job).description && (
           <div>
-            <p className="text-sm text-slate-500 mb-1">業務詳細</p>
+            <p className="text-sm text-slate-500 mb-1">業務内容</p>
             <p className="whitespace-pre-wrap text-sm text-slate-700">
               {(job as Job).description}
+            </p>
+          </div>
+        )}
+        {(job as Job).notes && (
+          <div>
+            <p className="text-sm text-slate-500 mb-1">備考</p>
+            <p className="whitespace-pre-wrap text-sm text-slate-700">
+              {(job as Job).notes}
             </p>
           </div>
         )}

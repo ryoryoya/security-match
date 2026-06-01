@@ -25,6 +25,7 @@ const schema = z.object({
   unit_price: z.coerce.number().int().min(0),
   price_type: z.enum(["daily", "hourly"]),
   description: z.string().optional(),
+  notes: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -152,10 +153,20 @@ export default function JobForm({ companyId }: { companyId: string }) {
         </Field>
       </div>
 
-      <Field label="業務詳細・注意事項">
+      <Field label="業務内容">
         <textarea
           {...register("description")}
           rows={4}
+          placeholder={"例:\n集合場所: 札幌駅北口ロータリー\n集合時間: 08:30\n服装: 制服・安全靴\n持ち物: 誘導棒・ヘルメット"}
+          className="w-full rounded-md border border-slate-300 px-3 py-2"
+        />
+      </Field>
+
+      <Field label="備考">
+        <textarea
+          {...register("notes")}
+          rows={3}
+          placeholder={"例:\n4時間未満は人工保障\n雨天決行\n初回顔合わせあり"}
           className="w-full rounded-md border border-slate-300 px-3 py-2"
         />
       </Field>
