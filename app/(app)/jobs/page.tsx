@@ -1,26 +1,44 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireSession } from "@/lib/auth";
-import JobCard from "@/components/job-card";
+import JobRow, { JobRowHeader } from "@/components/job-row";
 import type { Job } from "@/lib/types";
 import { PREFECTURES } from "@/lib/types";
+
+type Sort = "date_asc" | "price_desc" | "created_desc";
+
+const SORTS: { value: Sort; label: string }[] = [
+  { value: "date_asc", label: "日付の近い順" },
+  { value: "price_desc", label: "単価の高い順" },
+  { value: "created_desc", label: "新着順" },
+];
 
 export default async function JobsListPage({
   searchParams,
 }: {
-  searchParams: Promise<{ prefecture?: string; status?: string }>;
+  searchParams: Promise<{ prefecture?: string; status?: string; sort?: string }>;
 }) {
   await requireSession();
   const supabase = await createClient();
   const sp = await searchParams;
 
-  let query = supabase
-    .from("jobs")
-    .select("*")
-    .order("work_date", { ascending: true });
+  const sort: Sort = SORTS.some((s) => s.value === sp.sort)
+    ? (sp.sort as Sort)
+    : "date_asc";
 
+  let query = supabase.from("jobs").select("*");
   if (sp.prefecture) query = query.eq("prefecture", sp.prefecture);
   query = query.eq("status", sp.status ?? "open");
+
+  if (sort === "price_desc") {
+    query = query.order("unit_price", { ascending: false });
+  } else if (sort === "created_desc") {
+    query = query.order("created_at", { ascending: false });
+  } else {
+    query = query
+      .order("work_date", { ascending: true })
+      .order("start_time", { ascending: true, nullsFirst: false });
+  }
 
   const { data: jobs, error } = await query;
 
@@ -69,12 +87,26 @@ export default async function JobsListPage({
             <option value="closed">終了</option>
           </select>
         </div>
+        <div>
+          <label className="block text-xs text-slate-500 mb-1">並び順</label>
+          <select
+            name="sort"
+            defaultValue={sort}
+            className="rounded border border-slate-300 px-3 py-1.5 text-sm bg-white"
+          >
+            {SORTS.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex items-end">
           <button
             type="submit"
             className="bg-slate-900 text-white text-sm px-4 py-1.5 rounded hover:bg-slate-700"
           >
-            絞り込み
+            適用
           </button>
         </div>
       </form>
@@ -82,10 +114,13 @@ export default async function JobsListPage({
       {error && <p className="text-sm text-red-600">{error.message}</p>}
 
       {jobs && jobs.length > 0 ? (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {(jobs as Job[]).map((j) => (
-            <JobCard key={j.id} job={j} />
-          ))}
+        <div>
+          <JobRowHeader />
+          <div className="space-y-2 mt-2">
+            {(jobs as Job[]).map((j) => (
+              <JobRow key={j.id} job={j} />
+            ))}
+          </div>
         </div>
       ) : (
         <div className="bg-white border border-dashed border-slate-300 rounded-lg p-10 text-center text-sm text-slate-500">
