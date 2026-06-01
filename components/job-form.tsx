@@ -11,8 +11,14 @@ import { PREFECTURES } from "@/lib/types";
 const schema = z.object({
   title: z.string().min(1, "タイトルは必須です"),
   work_date: z.string().min(1, "日付は必須です"),
-  start_time: z.string().optional(),
-  end_time: z.string().optional(),
+  start_time: z
+    .string()
+    .optional()
+    .refine((v) => !v || /^\d{1,2}:\d{2}$/.test(v), "HH:MM 形式で入力してください"),
+  end_time: z
+    .string()
+    .optional()
+    .refine((v) => !v || /^\d{1,2}:\d{2}$/.test(v), "HH:MM 形式で入力してください"),
   prefecture: z.string().optional(),
   location: z.string().optional(),
   required_count: z.coerce.number().int().min(1, "1人以上"),
@@ -72,17 +78,19 @@ export default function JobForm({ companyId }: { companyId: string }) {
             className="w-full rounded-md border border-slate-300 px-3 py-2"
           />
         </Field>
-        <Field label="開始時刻">
+        <Field label="開始時刻" error={errors.start_time?.message}>
           <input
-            type="time"
             {...register("start_time")}
+            placeholder="例: 09:00"
+            inputMode="numeric"
             className="w-full rounded-md border border-slate-300 px-3 py-2"
           />
         </Field>
-        <Field label="終了時刻">
+        <Field label="終了時刻" error={errors.end_time?.message}>
           <input
-            type="time"
             {...register("end_time")}
+            placeholder="例: 18:00"
+            inputMode="numeric"
             className="w-full rounded-md border border-slate-300 px-3 py-2"
           />
         </Field>
