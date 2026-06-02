@@ -25,9 +25,16 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  // NOTE: getSession() decodes the auth cookie locally (no network round-trip
+  // to GoTrue), and the @supabase/ssr client will still refresh the token via
+  // the cookies callback above if it's near expiry. This middleware is only
+  // used for redirect UX — actual data access is gated by `requireSession()`
+  // (which calls getUser() and re-validates) plus RLS, so a tampered cookie
+  // cannot grant access to data.
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   const pathname = request.nextUrl.pathname;
   const isPublic =
