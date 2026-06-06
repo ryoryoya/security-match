@@ -37,8 +37,8 @@ export default function Sidebar({
     <>
       {/* Mobile header */}
       <header className="md:hidden bg-slate-800 border-b border-slate-700 px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-white text-3xl">
-          sytac
+        <Link href="/" className="font-bold text-white text-4xl">
+          Sytac
         </Link>
         <button
           onClick={() => setOpen((v) => !v)}
@@ -57,7 +57,7 @@ export default function Sidebar({
         )}
       >
         <div className="hidden md:block p-6 border-b border-slate-700">
-          <p className="font-bold text-white text-3xl">sytac</p>
+          <p className="font-bold text-white text-4xl">Sytac</p>
           <p className="text-xs text-slate-400 mt-1 truncate">{companyName}</p>
         </div>
 
