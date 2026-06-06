@@ -11,7 +11,7 @@ export default function ReopenJobButton({ jobId }: { jobId: string }) {
   async function reopen() {
     if (
       !confirm(
-        "この案件を再募集しますか？\n承認済みの応募はすべて『却下』に切り替わります。"
+        "この案件を再募集しますか？\nマッチング済みの応募はすべて『破談』に切り替わります。"
       )
     ) {
       return;

@@ -134,10 +134,10 @@ export default async function JobDetailPage({
         )}
       </section>
 
-      {!isMine && myApplication?.status === "accepted" && jobCompany && (
+      {!isMine && myApplication && jobCompany && (
         <section className="bg-emerald-500/10 border border-emerald-800 rounded-lg p-6 space-y-2">
           <h2 className="text-lg font-semibold text-emerald-300">
-            承認されました
+            マッチング成立
           </h2>
           <p className="text-sm text-slate-200">
             発注会社の担当者にご連絡ください。
@@ -197,7 +197,6 @@ export default async function JobDetailPage({
                   applicantCompany={
                     companiesMap.get(app.applicant_company_id) ?? null
                   }
-                  isJobOwner
                 />
               ))}
             </div>

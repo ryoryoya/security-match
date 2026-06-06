@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import JobCard from "@/components/job-card";
-import type { Job, Application } from "@/lib/types";
+import type { Job } from "@/lib/types";
 
 export default async function DashboardPage() {
   const session = await requireSession();
@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const [
     { data: recentJobs },
     { data: myOpenJobs },
-    { data: incomingApplications },
+    { count: myFilledCount },
   ] = await Promise.all([
     supabase
       .from("jobs")
@@ -28,12 +28,10 @@ export default async function DashboardPage() {
       .order("work_date", { ascending: true })
       .limit(5),
     supabase
-      .from("applications")
-      .select("*, jobs!inner(title, company_id)")
-      .eq("status", "pending")
-      .eq("jobs.company_id", session.company.id)
-      .order("created_at", { ascending: false })
-      .limit(5),
+      .from("jobs")
+      .select("id", { count: "exact", head: true })
+      .eq("company_id", session.company.id)
+      .eq("status", "filled"),
   ]);
 
   return (
@@ -52,8 +50,8 @@ export default async function DashboardPage() {
           href="/my-jobs"
         />
         <StatCard
-          label="未対応の応募"
-          value={(incomingApplications ?? []).length}
+          label="マッチング済み案件"
+          value={myFilledCount ?? 0}
           href="/my-jobs"
         />
         <StatCard

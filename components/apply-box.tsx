@@ -69,9 +69,9 @@ export default function ApplyBox({
       <h2 className="text-lg font-semibold text-brand-300 mb-1">
         {existing ? "応募内容を更新" : "この案件に応募する"}
       </h2>
-      {existing && (
+      {!existing && (
         <p className="text-xs text-brand-300 mb-3">
-          現在の状態: {statusLabel(existing.status)}
+          応募と同時にマッチング成立となります。
         </p>
       )}
       <div className="space-y-3">
@@ -123,8 +123,4 @@ export default function ApplyBox({
       </div>
     </section>
   );
-}
-
-function statusLabel(s: Application["status"]) {
-  return { pending: "承認待ち", accepted: "承認済み", rejected: "却下" }[s];
 }

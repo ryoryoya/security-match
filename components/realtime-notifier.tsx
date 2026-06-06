@@ -95,7 +95,7 @@ export default function RealtimeNotifier({
           }
           className="block bg-slate-800 border border-brand-500 rounded-lg shadow-lg px-4 py-3 hover:bg-slate-700"
         >
-          <p className="text-xs text-brand-300 font-medium">新着応募</p>
+          <p className="text-xs text-brand-300 font-medium">マッチング成立</p>
           <p className="text-sm text-white font-semibold mt-0.5 truncate">
             {t.applicantName}
           </p>

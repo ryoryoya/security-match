@@ -10,18 +10,17 @@ const NAV = [
   { href: "/", label: "ダッシュボード", icon: "🏠" },
   { href: "/jobs", label: "案件一覧", icon: "📋" },
   { href: "/jobs/new", label: "案件を募集", icon: "➕" },
-  { href: "/my-jobs", label: "自社案件", icon: "🏢", badgeKey: "pendingApplications" as const },
+  { href: "/my-applications", label: "応募履歴", icon: "📨" },
+  { href: "/my-jobs", label: "自社案件", icon: "🏢" },
   { href: "/settings", label: "会社設定", icon: "⚙️" },
 ];
 
 export default function Sidebar({
   companyName,
   userName,
-  pendingApplicationsCount,
 }: {
   companyName: string;
   userName: string;
-  pendingApplicationsCount: number;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -38,7 +37,7 @@ export default function Sidebar({
     <>
       {/* Mobile header */}
       <header className="md:hidden bg-slate-800 border-b border-slate-700 px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-white">
+        <Link href="/" className="font-bold text-white text-3xl">
           sytac
         </Link>
         <button
@@ -58,7 +57,7 @@ export default function Sidebar({
         )}
       >
         <div className="hidden md:block p-6 border-b border-slate-700">
-          <p className="font-bold text-white">sytac</p>
+          <p className="font-bold text-white text-3xl">sytac</p>
           <p className="text-xs text-slate-400 mt-1 truncate">{companyName}</p>
         </div>
 
@@ -68,10 +67,6 @@ export default function Sidebar({
               item.href === "/"
                 ? pathname === "/"
                 : pathname === item.href || pathname.startsWith(item.href + "/");
-            const badge =
-              item.badgeKey === "pendingApplications" && pendingApplicationsCount > 0
-                ? pendingApplicationsCount
-                : null;
             return (
               <Link
                 key={item.href}
@@ -86,11 +81,6 @@ export default function Sidebar({
               >
                 <span>{item.icon}</span>
                 <span className="flex-1">{item.label}</span>
-                {badge !== null && (
-                  <span className="bg-rose-500 text-white text-xs font-semibold rounded-full px-2 py-0.5 min-w-[1.5rem] text-center">
-                    {badge > 99 ? "99+" : badge}
-                  </span>
-                )}
               </Link>
             );
           })}
