@@ -9,14 +9,10 @@ export default function ApplicationRow({
   application,
   applicantCompany,
   isJobOwner,
-  jobId,
-  jobOwnerCompanyId,
 }: {
   application: Application;
   applicantCompany: Company | null;
   isJobOwner: boolean;
-  jobId: string;
-  jobOwnerCompanyId: string;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -34,42 +30,6 @@ export default function ApplicationRow({
       return;
     }
     router.refresh();
-  }
-
-  async function startChat() {
-    if (!applicantCompany) return;
-    setLoading(true);
-    const supabase = createClient();
-
-    // Deterministic pair ordering so (A,B) and (B,A) don't create duplicates.
-    const a = jobOwnerCompanyId < applicantCompany.id ? jobOwnerCompanyId : applicantCompany.id;
-    const b = jobOwnerCompanyId < applicantCompany.id ? applicantCompany.id : jobOwnerCompanyId;
-
-    // Try to find an existing thread first
-    const { data: existing } = await supabase
-      .from("message_threads")
-      .select("id")
-      .eq("job_id", jobId)
-      .eq("company_a_id", a)
-      .eq("company_b_id", b)
-      .maybeSingle();
-
-    let threadId = existing?.id;
-    if (!threadId) {
-      const { data, error } = await supabase
-        .from("message_threads")
-        .insert({ job_id: jobId, company_a_id: a, company_b_id: b })
-        .select("id")
-        .single();
-      if (error) {
-        setLoading(false);
-        alert(error.message);
-        return;
-      }
-      threadId = data.id;
-    }
-    setLoading(false);
-    router.push(`/messages/${threadId}`);
   }
 
   return (
@@ -90,32 +50,42 @@ export default function ApplicationRow({
         </div>
         <StatusPill status={application.status} />
       </div>
-      {isJobOwner && (
+      {application.status === "accepted" && applicantCompany && (
+        <div className="mt-3 bg-emerald-500/10 border border-emerald-800 rounded p-3 space-y-1">
+          <p className="text-xs text-emerald-300 font-medium">担当者連絡先</p>
+          <p className="text-sm text-white">
+            担当者: {applicantCompany.contact_person ?? "未登録"}
+          </p>
+          <p className="text-sm text-white">
+            電話番号:{" "}
+            {applicantCompany.phone ? (
+              <a
+                href={`tel:${applicantCompany.phone}`}
+                className="text-brand-300 hover:underline"
+              >
+                {applicantCompany.phone}
+              </a>
+            ) : (
+              "未登録"
+            )}
+          </p>
+        </div>
+      )}
+      {isJobOwner && application.status === "pending" && (
         <div className="flex gap-2 mt-3 flex-wrap">
-          {application.status === "pending" && (
-            <>
-              <button
-                onClick={() => updateStatus("accepted")}
-                disabled={loading}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-3 py-1.5 rounded disabled:opacity-50"
-              >
-                承認
-              </button>
-              <button
-                onClick={() => updateStatus("rejected")}
-                disabled={loading}
-                className="border border-slate-600 text-slate-200 text-sm px-3 py-1.5 rounded hover:bg-slate-700"
-              >
-                却下
-              </button>
-            </>
-          )}
           <button
-            onClick={startChat}
+            onClick={() => updateStatus("accepted")}
             disabled={loading}
-            className="border border-brand-500 text-brand-300 text-sm px-3 py-1.5 rounded hover:bg-sky-500/10"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-3 py-1.5 rounded disabled:opacity-50"
           >
-            チャットで連絡
+            承認
+          </button>
+          <button
+            onClick={() => updateStatus("rejected")}
+            disabled={loading}
+            className="border border-slate-600 text-slate-200 text-sm px-3 py-1.5 rounded hover:bg-slate-700"
+          >
+            却下
           </button>
         </div>
       )}

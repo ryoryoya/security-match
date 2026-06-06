@@ -63,23 +63,6 @@ export interface Application {
   created_at: string;
 }
 
-export interface MessageThread {
-  id: string;
-  job_id: string;
-  company_a_id: string;
-  company_b_id: string;
-  created_at: string;
-}
-
-export interface Message {
-  id: string;
-  thread_id: string;
-  sender_company_id: string;
-  sender_user_id: string;
-  body: string;
-  created_at: string;
-}
-
 export interface Invitation {
   id: string;
   token: string;

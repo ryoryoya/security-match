@@ -134,6 +134,38 @@ export default async function JobDetailPage({
         )}
       </section>
 
+      {!isMine && myApplication?.status === "accepted" && jobCompany && (
+        <section className="bg-emerald-500/10 border border-emerald-800 rounded-lg p-6 space-y-2">
+          <h2 className="text-lg font-semibold text-emerald-300">
+            承認されました
+          </h2>
+          <p className="text-sm text-slate-200">
+            発注会社の担当者にご連絡ください。
+          </p>
+          <div className="mt-2 space-y-1">
+            <p className="text-sm text-white">
+              会社名: {(jobCompany as Company).name}
+            </p>
+            <p className="text-sm text-white">
+              担当者: {(jobCompany as Company).contact_person ?? "未登録"}
+            </p>
+            <p className="text-sm text-white">
+              電話番号:{" "}
+              {(jobCompany as Company).phone ? (
+                <a
+                  href={`tel:${(jobCompany as Company).phone}`}
+                  className="text-brand-300 hover:underline"
+                >
+                  {(jobCompany as Company).phone}
+                </a>
+              ) : (
+                "未登録"
+              )}
+            </p>
+          </div>
+        </section>
+      )}
+
       {!isMine && (job as Job).status === "open" && (
         <ApplyBox
           jobId={(job as Job).id}
@@ -166,8 +198,6 @@ export default async function JobDetailPage({
                     companiesMap.get(app.applicant_company_id) ?? null
                   }
                   isJobOwner
-                  jobId={(job as Job).id}
-                  jobOwnerCompanyId={(job as Job).company_id}
                 />
               ))}
             </div>

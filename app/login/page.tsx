@@ -31,7 +31,7 @@ export default function LoginPage() {
     <main className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-8">
         <h1 className="text-2xl font-bold text-white mb-1">
-          security-match
+          sytac
         </h1>
         <p className="text-sm text-slate-400 mb-6">
           警備会社向け 人員マッチングネットワーク

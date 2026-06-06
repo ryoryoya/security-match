@@ -12,7 +12,6 @@ export default async function DashboardPage() {
     { data: recentJobs },
     { data: myOpenJobs },
     { data: incomingApplications },
-    { data: threads },
   ] = await Promise.all([
     supabase
       .from("jobs")
@@ -35,12 +34,6 @@ export default async function DashboardPage() {
       .eq("jobs.company_id", session.company.id)
       .order("created_at", { ascending: false })
       .limit(5),
-    supabase
-      .from("message_threads")
-      .select("id")
-      .or(
-        `company_a_id.eq.${session.company.id},company_b_id.eq.${session.company.id}`
-      ),
   ]);
 
   return (
@@ -52,7 +45,7 @@ export default async function DashboardPage() {
         <p className="text-sm text-slate-400 mt-1">{session.company.name}</p>
       </div>
 
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <section className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <StatCard
           label="自社の募集中案件"
           value={(myOpenJobs ?? []).length}
@@ -67,11 +60,6 @@ export default async function DashboardPage() {
           label="公開中の他社案件"
           value={(recentJobs ?? []).length}
           href="/jobs"
-        />
-        <StatCard
-          label="アクティブスレッド"
-          value={(threads ?? []).length}
-          href="/messages"
         />
       </section>
 
