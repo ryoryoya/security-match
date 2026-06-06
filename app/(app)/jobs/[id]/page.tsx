@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { requireSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import type { Application, Company, Job } from "@/lib/types";
+import type { Application, Company, Job, Profile } from "@/lib/types";
 import { SHIFT_LABEL } from "@/lib/types";
 import ApplyBox from "@/components/apply-box";
 import ApplicationRow from "@/components/application-row";
@@ -50,6 +50,30 @@ export default async function JobDetailPage({
   const companiesMap = new Map(
     ((applicantCompanies ?? []) as Company[]).map((c) => [c.id, c])
   );
+
+  // 応募者のユーザープロフィール (案件主に表示する担当者連絡先のソース)
+  const applicantUserIds = Array.from(
+    new Set(
+      (applications ?? [])
+        .map((a) => a.applicant_user_id)
+        .filter((v): v is string => Boolean(v))
+    )
+  );
+  const { data: applicantProfiles } = applicantUserIds.length
+    ? await supabase.from("profiles").select("*").in("id", applicantUserIds)
+    : { data: [] as Profile[] };
+  const applicantProfileMap = new Map(
+    ((applicantProfiles ?? []) as Profile[]).map((p) => [p.id, p])
+  );
+
+  // 案件投稿者のプロフィール (応募者に表示する担当者連絡先のソース)
+  const { data: jobCreatorProfile } = (job as Job).created_by_user_id
+    ? await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", (job as Job).created_by_user_id!)
+        .maybeSingle()
+    : { data: null as Profile | null };
 
   const myApplication = (applications ?? []).find(
     (a) => a.applicant_company_id === session.company.id
@@ -147,16 +171,16 @@ export default async function JobDetailPage({
               会社名: {(jobCompany as Company).name}
             </p>
             <p className="text-sm text-white">
-              担当者: {(jobCompany as Company).contact_person ?? "未登録"}
+              担当者: {jobCreatorProfile?.display_name ?? "未登録"}
             </p>
             <p className="text-sm text-white">
               電話番号:{" "}
-              {(jobCompany as Company).phone ? (
+              {jobCreatorProfile?.phone ? (
                 <a
-                  href={`tel:${(jobCompany as Company).phone}`}
+                  href={`tel:${jobCreatorProfile.phone}`}
                   className="text-brand-300 hover:underline"
                 >
-                  {(jobCompany as Company).phone}
+                  {jobCreatorProfile.phone}
                 </a>
               ) : (
                 "未登録"
@@ -196,6 +220,11 @@ export default async function JobDetailPage({
                   application={app}
                   applicantCompany={
                     companiesMap.get(app.applicant_company_id) ?? null
+                  }
+                  applicantProfile={
+                    app.applicant_user_id
+                      ? applicantProfileMap.get(app.applicant_user_id) ?? null
+                      : null
                   }
                 />
               ))}

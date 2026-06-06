@@ -32,7 +32,7 @@ export default async function SettingsPage() {
           通知メール
         </h2>
         <p className="text-sm text-slate-400 mb-3">
-          新規案件・応募の通知が届くメールアドレスです。ログイン用メールと別にできます。
+          新規案件・応募の通知が届く宛先です。
         </p>
         <ProfileSettingsForm profile={session.profile} />
       </section>

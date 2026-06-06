@@ -30,12 +30,14 @@ export interface Profile {
   display_name: string | null;
   role: CompanyRole;
   notification_email: string | null;
+  phone: string | null;
   created_at: string;
 }
 
 export interface Job {
   id: string;
   company_id: string;
+  created_by_user_id: string | null;
   title: string;
   work_date: string | null;
   start_time: string | null;
@@ -57,6 +59,7 @@ export interface Application {
   id: string;
   job_id: string;
   applicant_company_id: string;
+  applicant_user_id: string | null;
   offered_count: number;
   note: string | null;
   status: ApplicationStatus;

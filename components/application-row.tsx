@@ -1,11 +1,13 @@
-import type { Application, Company } from "@/lib/types";
+import type { Application, Company, Profile } from "@/lib/types";
 
 export default function ApplicationRow({
   application,
   applicantCompany,
+  applicantProfile,
 }: {
   application: Application;
   applicantCompany: Company | null;
+  applicantProfile: Profile | null;
 }) {
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
@@ -27,27 +29,25 @@ export default function ApplicationRow({
           マッチング成立
         </span>
       </div>
-      {applicantCompany && (
-        <div className="mt-3 bg-emerald-500/10 border border-emerald-800 rounded p-3 space-y-1">
-          <p className="text-xs text-emerald-300 font-medium">担当者連絡先</p>
-          <p className="text-sm text-white">
-            担当者: {applicantCompany.contact_person ?? "未登録"}
-          </p>
-          <p className="text-sm text-white">
-            電話番号:{" "}
-            {applicantCompany.phone ? (
-              <a
-                href={`tel:${applicantCompany.phone}`}
-                className="text-brand-300 hover:underline"
-              >
-                {applicantCompany.phone}
-              </a>
-            ) : (
-              "未登録"
-            )}
-          </p>
-        </div>
-      )}
+      <div className="mt-3 bg-emerald-500/10 border border-emerald-800 rounded p-3 space-y-1">
+        <p className="text-xs text-emerald-300 font-medium">担当者連絡先</p>
+        <p className="text-sm text-white">
+          担当者: {applicantProfile?.display_name ?? "未登録"}
+        </p>
+        <p className="text-sm text-white">
+          電話番号:{" "}
+          {applicantProfile?.phone ? (
+            <a
+              href={`tel:${applicantProfile.phone}`}
+              className="text-brand-300 hover:underline"
+            >
+              {applicantProfile.phone}
+            </a>
+          ) : (
+            "未登録"
+          )}
+        </p>
+      </div>
     </div>
   );
 }
