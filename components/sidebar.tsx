@@ -37,7 +37,11 @@ export default function Sidebar({
     <>
       {/* Mobile header */}
       <header className="md:hidden bg-slate-800 border-b border-slate-700 px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-white text-4xl">
+        <Link
+          href="/"
+          className="text-white text-4xl tracking-tight"
+          style={{ fontFamily: "var(--font-manrope)", fontWeight: 800 }}
+        >
           Sytac
         </Link>
         <button
@@ -57,7 +61,12 @@ export default function Sidebar({
         )}
       >
         <div className="hidden md:block p-6 border-b border-slate-700">
-          <p className="font-bold text-white text-4xl">Sytac</p>
+          <p
+            className="text-white text-4xl tracking-tight"
+            style={{ fontFamily: "var(--font-manrope)", fontWeight: 800 }}
+          >
+            Sytac
+          </p>
           <p className="text-xs text-slate-400 mt-1 truncate">{companyName}</p>
         </div>
 
