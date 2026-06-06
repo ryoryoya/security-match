@@ -3,16 +3,23 @@ import { createClient } from "@/lib/supabase/server";
 import CompanySettingsForm from "@/components/company-settings-form";
 import ProfileSettingsForm from "@/components/profile-settings-form";
 import InvitePanel from "@/components/invite-panel";
+import { INVITER_EMAILS } from "@/lib/access";
 import type { Invitation } from "@/lib/types";
 
 export default async function SettingsPage() {
   const session = await requireSession();
   const supabase = await createClient();
 
-  const { data: invitations } = await supabase
-    .from("invitations")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const canInvite = INVITER_EMAILS.includes(
+    (session.email ?? "").toLowerCase()
+  );
+
+  const { data: invitations } = canInvite
+    ? await supabase
+        .from("invitations")
+        .select("*")
+        .order("created_at", { ascending: false })
+    : { data: [] as Invitation[] };
 
   return (
     <div className="max-w-2xl space-y-8">
@@ -35,15 +42,17 @@ export default async function SettingsPage() {
         <CompanySettingsForm company={session.company} />
       </section>
 
-      <section>
-        <h2 className="text-lg font-semibold text-white mb-3">
-          招待リンク
-        </h2>
-        <p className="text-sm text-slate-400 mb-3">
-          つながりのある警備会社に招待リンクを発行できます。有効期限は14日間です。
-        </p>
-        <InvitePanel invitations={(invitations ?? []) as Invitation[]} />
-      </section>
+      {canInvite && (
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-3">
+            招待リンク
+          </h2>
+          <p className="text-sm text-slate-400 mb-3">
+            つながりのある警備会社に招待リンクを発行できます。有効期限は14日間です。
+          </p>
+          <InvitePanel invitations={(invitations ?? []) as Invitation[]} />
+        </section>
+      )}
     </div>
   );
 }

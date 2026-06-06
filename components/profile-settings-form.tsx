@@ -7,9 +7,6 @@ import type { Profile } from "@/lib/types";
 
 export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
   const router = useRouter();
-  const [notificationEmail, setNotificationEmail] = useState(
-    profile.notification_email ?? ""
-  );
   const [displayName, setDisplayName] = useState(profile.display_name ?? "");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -23,7 +20,6 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
     const { error } = await supabase
       .from("profiles")
       .update({
-        notification_email: notificationEmail || null,
         display_name: displayName || null,
       })
       .eq("id", profile.id);
@@ -49,22 +45,6 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
           className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-slate-200 mb-1">
-          通知先メールアドレス
-        </label>
-        <input
-          type="email"
-          value={notificationEmail}
-          onChange={(e) => setNotificationEmail(e.target.value)}
-          placeholder="例: info@example.com"
-          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
-        />
-        <p className="text-xs text-slate-400 mt-1">
-          空欄にすると通知メールは送信されません。
-        </p>
-      </div>
-
       {error && (
         <p className="text-sm text-red-300 bg-red-500/10 border border-red-800 rounded px-3 py-2">
           {error}
