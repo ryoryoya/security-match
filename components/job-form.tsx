@@ -397,7 +397,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
           disabled={isSubmitting}
           className="bg-brand-500 hover:bg-brand-600 text-white font-medium px-6 py-2 rounded disabled:opacity-50"
         >
-          {isSubmitting ? "送信中..." : "募集する"}
+          {isSubmitting ? "送信中..." : "投稿する"}
         </button>
       </div>
     </form>

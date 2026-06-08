@@ -98,7 +98,7 @@ export default async function DashboardPage() {
           <EmptyCard>
             募集中の案件はありません。{" "}
             <Link href="/jobs/new" className="text-brand-300 hover:underline">
-              案件を募集する
+              案件を投稿する
             </Link>
           </EmptyCard>
         )}

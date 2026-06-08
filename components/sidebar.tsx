@@ -18,10 +18,10 @@ type IconName =
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/", label: "ダッシュボード", icon: "dashboard" },
   { href: "/jobs", label: "案件一覧", icon: "jobs" },
-  { href: "/jobs/archive", label: "終了案件", icon: "archive" },
-  { href: "/jobs/new", label: "案件を募集", icon: "new-job" },
+  { href: "/jobs/new", label: "案件を投稿する", icon: "new-job" },
   { href: "/my-applications", label: "応募履歴", icon: "applications" },
   { href: "/my-jobs", label: "自社案件", icon: "my-jobs" },
+  { href: "/jobs/archive", label: "過去案件", icon: "archive" },
   { href: "/settings", label: "会社設定", icon: "settings" },
 ];
 

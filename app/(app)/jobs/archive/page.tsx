@@ -46,7 +46,7 @@ export default async function ArchivedJobsPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-white">終了案件一覧</h1>
+        <h1 className="text-2xl font-bold text-white">過去案件一覧</h1>
         <p className="text-xs text-slate-400">
           作業日が過ぎた案件をここに表示します。90日経過後は自動削除されます。
         </p>

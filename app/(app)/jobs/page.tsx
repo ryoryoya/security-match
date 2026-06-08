@@ -66,7 +66,7 @@ export default async function JobsListPage({
           href="/jobs/new"
           className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-md transition"
         >
-          + 案件を募集
+          + 案件を投稿する
         </Link>
       </div>
 
