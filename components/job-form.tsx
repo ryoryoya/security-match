@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { PREFECTURES } from "@/lib/types";
 
@@ -28,14 +28,10 @@ const schema = z.object({
   title: z.string().min(1, "タイトルは必須です"),
   work_date: z
     .string({
-      required_error: "作業日を入力するか未定を選択してください",
-      invalid_type_error: "作業日を入力するか未定を選択してください",
+      required_error: "作業日を選択してください",
+      invalid_type_error: "作業日を選択してください",
     })
-    .nullable()
-    .refine(
-      (v) => v === null || v.length > 0,
-      "作業日を入力するか未定を選択してください"
-    ),
+    .min(1, "作業日を選択してください"),
   start_time: timeField("開始時刻"),
   end_time: timeField("終了時刻"),
   prefecture: z
@@ -109,7 +105,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
     const supabase = createClient();
     const payload = {
       ...values,
-      work_date: values.work_date || null,
+      work_date: values.work_date,
       start_time: values.start_time || null,
       end_time: values.end_time || null,
       prefecture: values.prefecture || null,
@@ -182,15 +178,14 @@ export default function JobForm({ companyId }: { companyId: string }) {
             )}
           />
         </Field>
-        <Field label="作業日" error={errors.work_date?.message}>
+        <Field label="作業日" error={errors.work_date?.message} required>
           <Controller
             name="work_date"
             control={control}
             render={({ field }) => (
-              <InputWithUndecided
-                value={field.value as string | null | undefined}
+              <DateInput
+                value={(field.value as string | undefined) ?? ""}
                 onChange={field.onChange}
-                inputType="date"
                 width="w-44"
               />
             )}
@@ -500,6 +495,69 @@ function ComboInput({
           className={`${width} rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2`}
         />
       )}
+    </div>
+  );
+}
+
+function DateInput({
+  value,
+  onChange,
+  width,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  width: string;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+
+  function openPicker() {
+    const el = ref.current;
+    if (!el) return;
+    const anyEl = el as HTMLInputElement & { showPicker?: () => void };
+    if (typeof anyEl.showPicker === "function") {
+      try {
+        anyEl.showPicker();
+        return;
+      } catch {
+        // フォールバックへ
+      }
+    }
+    el.focus();
+    el.click();
+  }
+
+  return (
+    <div className={`relative ${width}`}>
+      <input
+        ref={ref}
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-md border border-white bg-white text-slate-900 px-3 py-2 pr-10 [&::-webkit-calendar-picker-indicator]:opacity-0"
+      />
+      <button
+        type="button"
+        onClick={openPicker}
+        aria-label="カレンダーを開く"
+        className="absolute inset-y-0 right-0 flex items-center px-2 text-slate-600 hover:text-brand-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5"
+          aria-hidden="true"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+      </button>
     </div>
   );
 }

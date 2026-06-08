@@ -1,25 +1,17 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireSession } from "@/lib/auth";
 import JobRow, { JobRowHeader } from "@/components/job-row";
 import type { Job, ShiftType } from "@/lib/types";
 import { PREFECTURES, SHIFT_LABEL } from "@/lib/types";
 
-type Sort = "date_asc" | "price_desc" | "created_desc";
-
-const SORTS: { value: Sort; label: string }[] = [
-  { value: "date_asc", label: "日付の近い順" },
-  { value: "price_desc", label: "単価の高い順" },
-  { value: "created_desc", label: "新着順" },
-];
-
-export default async function JobsListPage({
+// 終了案件（work_date が過ぎた案件）の一覧。
+// 直近 90 日以内のものを新しい順に表示する。
+// 90 日を超えたものは pg_cron により DB 側で自動削除される。
+export default async function ArchivedJobsPage({
   searchParams,
 }: {
   searchParams: Promise<{
     prefecture?: string;
-    status?: string;
-    sort?: string;
     shift?: string;
   }>;
 }) {
@@ -27,47 +19,37 @@ export default async function JobsListPage({
   const supabase = await createClient();
   const sp = await searchParams;
 
-  const sort: Sort = SORTS.some((s) => s.value === sp.sort)
-    ? (sp.sort as Sort)
-    : "date_asc";
-
   const validShifts: ShiftType[] = ["day", "night", "business_trip"];
   const shiftFilter = validShifts.includes(sp.shift as ShiftType)
     ? (sp.shift as ShiftType)
     : undefined;
 
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const cutoff = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
 
-  let query = supabase.from("jobs").select("*");
+  let query = supabase
+    .from("jobs")
+    .select("*")
+    .lt("work_date", today)
+    .gte("work_date", cutoff);
   if (sp.prefecture) query = query.eq("prefecture", sp.prefecture);
   if (shiftFilter) query = query.eq("shift_type", shiftFilter);
-  query = query.eq("status", sp.status ?? "open");
-  // 終了済み（work_date が今日より前）の案件は表示しない。
-  // 日付未定（work_date IS NULL）はそのまま残す。
-  query = query.or(`work_date.gte.${today},work_date.is.null`);
-
-  if (sort === "price_desc") {
-    query = query.order("unit_price", { ascending: false });
-  } else if (sort === "created_desc") {
-    query = query.order("created_at", { ascending: false });
-  } else {
-    query = query
-      .order("work_date", { ascending: true })
-      .order("start_time", { ascending: true, nullsFirst: false });
-  }
+  query = query
+    .order("work_date", { ascending: false })
+    .order("start_time", { ascending: false, nullsFirst: false });
 
   const { data: jobs, error } = await query;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-white">案件一覧</h1>
-        <Link
-          href="/jobs/new"
-          className="bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-4 py-2 rounded-md transition"
-        >
-          + 案件を募集
-        </Link>
+        <h1 className="text-2xl font-bold text-white">終了案件一覧</h1>
+        <p className="text-xs text-slate-400">
+          作業日が過ぎた案件をここに表示します。90日経過後は自動削除されます。
+        </p>
       </div>
 
       <form
@@ -104,34 +86,6 @@ export default async function JobsListPage({
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-xs text-slate-400 mb-1">
-            ステータス
-          </label>
-          <select
-            name="status"
-            defaultValue={sp.status ?? "open"}
-            className="rounded border border-white px-3 py-1.5 text-sm bg-white text-slate-900"
-          >
-            <option value="open">募集中</option>
-            <option value="filled">マッチング済み</option>
-            <option value="closed">終了</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs text-slate-400 mb-1">並び順</label>
-          <select
-            name="sort"
-            defaultValue={sort}
-            className="rounded border border-white px-3 py-1.5 text-sm bg-white text-slate-900"
-          >
-            {SORTS.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="flex items-end">
           <button
             type="submit"
@@ -155,7 +109,7 @@ export default async function JobsListPage({
         </div>
       ) : (
         <div className="bg-slate-800 border border-dashed border-slate-700 rounded-lg p-10 text-center text-sm text-slate-400">
-          条件に合う案件はまだありません。
+          直近90日以内の終了案件はありません。
         </div>
       )}
     </div>
