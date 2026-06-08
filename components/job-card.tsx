@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Job } from "@/lib/types";
 import { SHIFT_LABEL } from "@/lib/types";
+import DeleteJobButton from "@/components/delete-job-button";
 
 export default function JobCard({
   job,
@@ -9,7 +10,7 @@ export default function JobCard({
   job: Job;
   mine?: boolean;
 }) {
-  return (
+  const link = (
     <Link
       href={`/jobs/${job.id}`}
       className="block bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-brand-500 hover:shadow-sm transition"
@@ -53,10 +54,19 @@ export default function JobCard({
               }`}
         </Row>
       </dl>
-      {mine && (
-        <p className="mt-2 text-xs text-brand-300">自社投稿</p>
-      )}
+      {mine && <p className="mt-2 text-xs text-brand-300">自社投稿</p>}
     </Link>
+  );
+
+  if (!mine) return link;
+
+  return (
+    <div className="flex flex-col">
+      {link}
+      <div className="mt-1 flex justify-end">
+        <DeleteJobButton jobId={job.id} />
+      </div>
+    </div>
   );
 }
 

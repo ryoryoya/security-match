@@ -9,6 +9,9 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
   const router = useRouter();
   const [displayName, setDisplayName] = useState(profile.display_name ?? "");
   const [phone, setPhone] = useState(profile.phone ?? "");
+  const [notificationEmail, setNotificationEmail] = useState(
+    profile.notification_email ?? ""
+  );
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -23,6 +26,7 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
       .update({
         display_name: displayName || null,
         phone: phone || null,
+        notification_email: notificationEmail || null,
       })
       .eq("id", profile.id);
     setLoading(false);
@@ -60,6 +64,21 @@ export default function ProfileSettingsForm({ profile }: { profile: Profile }) {
         />
         <p className="text-xs text-slate-400 mt-1">
           マッチング成立時に相手会社へ表示される連絡先です。
+        </p>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-200 mb-1">
+          メールアドレス（任意）
+        </label>
+        <input
+          type="email"
+          value={notificationEmail}
+          onChange={(e) => setNotificationEmail(e.target.value)}
+          placeholder="例: notify@example.co.jp"
+          className="w-full rounded-md border border-white bg-white text-slate-900 placeholder:text-slate-500 px-3 py-2"
+        />
+        <p className="text-xs text-slate-400 mt-1">
+          新規案件・応募の通知を受け取るメールアドレスです。
         </p>
       </div>
       {error && (

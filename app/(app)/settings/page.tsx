@@ -29,7 +29,7 @@ export default async function SettingsPage() {
 
       <section>
         <h2 className="text-lg font-semibold text-white mb-3">
-          通知メール
+          通知先
         </h2>
         <p className="text-sm text-slate-400 mb-3">
           新規案件・応募の通知が届く宛先です。
