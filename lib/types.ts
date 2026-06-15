@@ -16,12 +16,19 @@ export const SHIFT_LABEL: Record<ShiftType, string> = {
 export interface Company {
   id: string;
   name: string;
+  prefecture: string | null;
+  created_at: string;
+}
+
+// 機微な連絡先情報。companies とは別テーブル (company_contacts) に分離し、
+// RLS で「自社 or マッチ成立済みの相手社」のみ閲覧可に制限している。
+export interface CompanyContact {
+  company_id: string;
   representative: string | null;
   contact_person: string | null;
   phone: string | null;
   address: string | null;
-  prefecture: string | null;
-  created_at: string;
+  updated_at: string;
 }
 
 export interface Profile {

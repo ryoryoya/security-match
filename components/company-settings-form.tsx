@@ -3,20 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import type { Company } from "@/lib/types";
+import type { Company, CompanyContact } from "@/lib/types";
 import { PREFECTURES } from "@/lib/types";
 
-export default function CompanySettingsForm({ company }: { company: Company }) {
+export default function CompanySettingsForm({
+  company,
+  contact,
+}: {
+  company: Company;
+  contact: CompanyContact | null;
+}) {
   const router = useRouter();
   const [name, setName] = useState(company.name);
   const [representative, setRepresentative] = useState(
-    company.representative ?? ""
+    contact?.representative ?? ""
   );
   const [contactPerson, setContactPerson] = useState(
-    company.contact_person ?? ""
+    contact?.contact_person ?? ""
   );
-  const [phone, setPhone] = useState(company.phone ?? "");
-  const [address, setAddress] = useState(company.address ?? "");
+  const [phone, setPhone] = useState(contact?.phone ?? "");
+  const [address, setAddress] = useState(contact?.address ?? "");
   const [prefecture, setPrefecture] = useState(company.prefecture ?? "");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -27,18 +33,23 @@ export default function CompanySettingsForm({ company }: { company: Company }) {
     setMessage(null);
     setLoading(true);
     const supabase = createClient();
-    const { error } = await supabase
+    // 公開情報 (会社名・都道府県) は companies に
+    const { error: companyError } = await supabase
       .from("companies")
-      .update({
-        name,
+      .update({ name, prefecture })
+      .eq("id", company.id);
+    // 機微な連絡先は company_contacts に (自社のみ書込可)
+    const { error: contactError } = await supabase
+      .from("company_contacts")
+      .upsert({
+        company_id: company.id,
         representative,
         contact_person: contactPerson,
         phone,
         address,
-        prefecture,
-      })
-      .eq("id", company.id);
+      });
     setLoading(false);
+    const error = companyError ?? contactError;
     if (error) {
       setError(error.message);
       return;
