@@ -98,6 +98,9 @@ export default function JobForm({ companyId }: { companyId: string }) {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      prefecture: "北海道",
+    },
   });
 
   async function onSubmit(values: FormValues) {
