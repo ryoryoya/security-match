@@ -101,9 +101,14 @@ export default async function JobDetailPage({
             ? SHIFT_LABEL[(job as Job).shift_type!]
             : "未定"}
         </Info>
-        <Info label="作業日">
+        <Info label={(job as Job).work_end_date ? "作業期間" : "作業日"}>
           {(job as Job).work_date
-            ? formatDate((job as Job).work_date!)
+            ? (job as Job).work_end_date &&
+              (job as Job).work_end_date !== (job as Job).work_date
+              ? `${formatDate((job as Job).work_date!)} 〜 ${formatDate(
+                  (job as Job).work_end_date!
+                )}`
+              : formatDate((job as Job).work_date!)
             : "未定"}
         </Info>
         <Info label="時間">

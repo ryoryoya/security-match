@@ -31,7 +31,7 @@ export default function JobCard({
       </div>
       <dl className="text-sm text-slate-200 space-y-1">
         <Row label="日時">
-          {job.work_date ? formatDate(job.work_date) : "未定"}
+          {job.work_date ? formatDateRange(job.work_date, job.work_end_date) : "未定"}
           {job.start_time && job.end_time
             ? ` ${job.start_time.slice(0, 5)}〜${job.end_time.slice(0, 5)}`
             : ""}
@@ -128,4 +128,9 @@ function jobStartDate(job: Pick<Job, "work_date" | "start_time">): Date | null {
 function formatDate(d: string) {
   const date = new Date(d);
   return `${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+function formatDateRange(start: string, end: string | null) {
+  if (end && end !== start) return `${formatDate(start)}〜${formatDate(end)}`;
+  return formatDate(start);
 }

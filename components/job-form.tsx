@@ -32,6 +32,7 @@ const schema = z.object({
       invalid_type_error: "作業日を選択してください",
     })
     .min(1, "作業日を選択してください"),
+  work_end_date: z.string().nullable().optional(),
   start_time: timeField("開始時刻"),
   end_time: timeField("終了時刻"),
   prefecture: z
@@ -81,6 +82,22 @@ const schema = z.object({
     .nullable(),
   description: z.string().optional(),
   notes: z.string().optional(),
+}).superRefine((val, ctx) => {
+  if (val.shift_type === "business_trip") {
+    if (!val.work_end_date) {
+      ctx.addIssue({
+        path: ["work_end_date"],
+        code: z.ZodIssueCode.custom,
+        message: "終了日を選択してください",
+      });
+    } else if (val.work_date && val.work_end_date < val.work_date) {
+      ctx.addIssue({
+        path: ["work_end_date"],
+        code: z.ZodIssueCode.custom,
+        message: "終了日は開始日以降にしてください",
+      });
+    }
+  }
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -95,6 +112,8 @@ export default function JobForm({ companyId }: { companyId: string }) {
     register,
     handleSubmit,
     control,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -103,12 +122,18 @@ export default function JobForm({ companyId }: { companyId: string }) {
     },
   });
 
+  const shiftType = watch("shift_type");
+
   async function onSubmit(values: FormValues) {
     setServerError(null);
     const supabase = createClient();
     const payload = {
       ...values,
       work_date: values.work_date,
+      work_end_date:
+        values.shift_type === "business_trip"
+          ? values.work_end_date || null
+          : null,
       start_time: values.start_time || null,
       end_time: values.end_time || null,
       prefecture: values.prefecture || null,
@@ -167,6 +192,7 @@ export default function JobForm({ companyId }: { companyId: string }) {
                     field.onChange(
                       v as "day" | "night" | "business_trip"
                     );
+                  if (v !== "business_trip") setValue("work_end_date", null);
                 }}
                 className="w-32 rounded-md border border-white px-3 py-2 bg-white text-slate-900"
               >
@@ -181,19 +207,53 @@ export default function JobForm({ companyId }: { companyId: string }) {
             )}
           />
         </Field>
-        <Field label="作業日" error={errors.work_date?.message} required>
-          <Controller
-            name="work_date"
-            control={control}
-            render={({ field }) => (
-              <DateInput
-                value={(field.value as string | undefined) ?? ""}
-                onChange={field.onChange}
-                width="w-44"
+        {shiftType === "business_trip" ? (
+          <Field
+            label="作業期間(開始〜終了)"
+            error={errors.work_date?.message || errors.work_end_date?.message}
+            required
+          >
+            <div className="flex items-center gap-2">
+              <Controller
+                name="work_date"
+                control={control}
+                render={({ field }) => (
+                  <DateInput
+                    value={(field.value as string | undefined) ?? ""}
+                    onChange={field.onChange}
+                    width="w-40"
+                  />
+                )}
               />
-            )}
-          />
-        </Field>
+              <span className="text-slate-300">〜</span>
+              <Controller
+                name="work_end_date"
+                control={control}
+                render={({ field }) => (
+                  <DateInput
+                    value={(field.value as string | null | undefined) ?? ""}
+                    onChange={field.onChange}
+                    width="w-40"
+                  />
+                )}
+              />
+            </div>
+          </Field>
+        ) : (
+          <Field label="作業日" error={errors.work_date?.message} required>
+            <Controller
+              name="work_date"
+              control={control}
+              render={({ field }) => (
+                <DateInput
+                  value={(field.value as string | undefined) ?? ""}
+                  onChange={field.onChange}
+                  width="w-44"
+                />
+              )}
+            />
+          </Field>
+        )}
         <Field label="開始時刻" error={errors.start_time?.message}>
           <Controller
             name="start_time"

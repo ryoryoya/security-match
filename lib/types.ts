@@ -47,6 +47,7 @@ export interface Job {
   created_by_user_id: string | null;
   title: string;
   work_date: string | null;
+  work_end_date: string | null;
   start_time: string | null;
   end_time: string | null;
   location: string | null;

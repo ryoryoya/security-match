@@ -95,7 +95,7 @@ async function handleJobCreated(job: Record<string, unknown>) {
   if (emails.length === 0) return { sent: 0 };
 
   const title = String(job.title ?? "");
-  const workDate = String(job.work_date ?? "");
+  const workDate = workPeriod(String(job.work_date ?? ""), String(job.work_end_date ?? ""));
   const prefecture = String(job.prefecture ?? "");
   const location = String(job.location ?? "");
   const requiredCount = Number(job.required_count ?? 0);
@@ -142,7 +142,7 @@ async function handleApplicationStatusChanged(app: Record<string, unknown>) {
 
   const { data: job } = await supabase
     .from("jobs")
-    .select("title, company_id, work_date, prefecture, location")
+    .select("title, company_id, work_date, work_end_date, prefecture, location")
     .eq("id", jobId)
     .maybeSingle();
   if (!job) return { sent: 0 };
@@ -169,7 +169,7 @@ async function handleApplicationStatusChanged(app: Record<string, unknown>) {
   if (emails.length === 0) return { sent: 0 };
 
   const jobTitle = String(job.title ?? "");
-  const workDate = String(job.work_date ?? "");
+  const workDate = workPeriod(String(job.work_date ?? ""), String(job.work_end_date ?? ""));
   const prefecture = String(job.prefecture ?? "");
   const location = String(job.location ?? "");
   const ownerName = ownerCompany?.name ?? "";
@@ -211,4 +211,9 @@ async function sendMail({ to, subject, html }: { to: string[]; subject: string; 
 
 function esc(s: string): string {
   return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function workPeriod(workDate: string, workEndDate: string): string {
+  if (workEndDate && workEndDate !== workDate) return `${workDate} 〜 ${workEndDate}`;
+  return workDate;
 }

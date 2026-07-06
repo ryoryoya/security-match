@@ -38,7 +38,7 @@ export default function JobRow({
       <div className={`grid grid-cols-1 ${GRID_COLS} gap-2 md:gap-4 px-4 py-3 md:items-center`}>
         <Cell label="日時">
           <span className="font-medium md:font-normal">
-            {job.work_date ? formatDate(job.work_date) : "未定"}
+            {job.work_date ? formatDateRange(job.work_date, job.work_end_date) : "未定"}
           </span>
           {job.start_time && job.end_time && (
             <span className="text-slate-400">
@@ -131,4 +131,9 @@ function StatusBadge({ status }: { status: Job["status"] }) {
 function formatDate(d: string) {
   const date = new Date(d);
   return `${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+function formatDateRange(start: string, end: string | null) {
+  if (end && end !== start) return `${formatDate(start)}〜${formatDate(end)}`;
+  return formatDate(start);
 }
